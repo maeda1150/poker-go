@@ -12,6 +12,7 @@ var (
 	exRoyalStraight []Card = []Card{Card{"s", 10}, Card{"c", 13}, Card{"s", 1}, Card{"h", 11}, Card{"d", 12}}
 	exFlush         []Card = []Card{Card{"c", 5}, Card{"c", 13}, Card{"c", 2}, Card{"c", 7}, Card{"c", 9}}
 	exFullHouse     []Card = []Card{Card{"c", 5}, Card{"s", 11}, Card{"d", 5}, Card{"h", 5}, Card{"c", 11}}
+	exFourOfAKind   []Card = []Card{Card{"c", 5}, Card{"s", 5}, Card{"d", 8}, Card{"h", 5}, Card{"d", 5}}
 )
 
 func TestOnePair(t *testing.T) {
@@ -36,6 +37,10 @@ func TestOnePair(t *testing.T) {
 	}
 
 	if onePair(exFullHouse) {
+		t.Fatal("expected not one pair.")
+	}
+
+	if onePair(exFourOfAKind) {
 		t.Fatal("expected not one pair.")
 	}
 }
@@ -64,6 +69,10 @@ func TestTwoPair(t *testing.T) {
 	if twoPair(exFullHouse) {
 		t.Fatal("ecpected not two pair.")
 	}
+
+	if twoPair(exFourOfAKind) {
+		t.Fatal("ecpected not two pair.")
+	}
 }
 
 func TestThreeOfAKind(t *testing.T) {
@@ -88,6 +97,10 @@ func TestThreeOfAKind(t *testing.T) {
 	}
 
 	if threeOfAKind(exFullHouse) {
+		t.Fatal("expected not three of a kind.")
+	}
+
+	if threeOfAKind(exFourOfAKind) {
 		t.Fatal("expected not three of a kind.")
 	}
 }
@@ -120,6 +133,10 @@ func TestStraight(t *testing.T) {
 	if straight(exFullHouse) {
 		t.Fatal("expected not straight.")
 	}
+
+	if straight(exFourOfAKind) {
+		t.Fatal("expected not straight.")
+	}
 }
 
 func TestFlush(t *testing.T) {
@@ -144,6 +161,10 @@ func TestFlush(t *testing.T) {
 	}
 
 	if flush(exFullHouse) {
+		t.Fatal("expected not flush.")
+	}
+
+	if flush(exFourOfAKind) {
 		t.Fatal("expected not flush.")
 	}
 }
@@ -171,5 +192,39 @@ func TestFullHouse(t *testing.T) {
 
 	if !fullHouse(exFullHouse) {
 		t.Fatal("expected full house.")
+	}
+
+	if fullHouse(exFourOfAKind) {
+		t.Fatal("expected full house.")
+	}
+}
+
+func TestFourOfAKind(t *testing.T) {
+	if fourOfAKind(exOnePair) {
+		t.Fatal("expected not four of a kind.")
+	}
+
+	if fourOfAKind(exTwoPair) {
+		t.Fatal("expected not four of a kind.")
+	}
+
+	if fourOfAKind(exThreeOfAKind) {
+		t.Fatal("expected not four of a kind.")
+	}
+
+	if fourOfAKind(exStraight) {
+		t.Fatal("expected not four of a kind.")
+	}
+
+	if fourOfAKind(exFlush) {
+		t.Fatal("expected not four of a kind.")
+	}
+
+	if fourOfAKind(exFullHouse) {
+		t.Fatal("expected not four of a kind.")
+	}
+
+	if !fourOfAKind(exFourOfAKind) {
+		t.Fatal("expected four of a kind.")
 	}
 }

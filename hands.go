@@ -1,6 +1,8 @@
 package main
 
-import "sort"
+import (
+	"sort"
+)
 
 func onePair(cards []Card) bool {
 	comb := combinations(cards, 2, 10)
@@ -28,6 +30,9 @@ func twoPair(cards []Card) bool {
 }
 
 func threeOfAKind(cards []Card) bool {
+	if fourOfAKind(cards) {
+		return false
+	}
 	comb := combinations(cards, 3, 10)
 	for com := range comb {
 		if com[0].Number == com[1].Number && com[0].Number == com[2].Number {
@@ -73,6 +78,16 @@ func fullHouse(cards []Card) bool {
 			if com[0].Number != rest[0].Number && rest[0].Number == rest[1].Number {
 				return true
 			}
+		}
+	}
+	return false
+}
+
+func fourOfAKind(cards []Card) bool {
+	comb := combinations(cards, 4, 10)
+	for com := range comb {
+		if com[0].Number == com[1].Number && com[0].Number == com[2].Number && com[0].Number == com[3].Number {
+			return true
 		}
 	}
 	return false
