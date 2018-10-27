@@ -61,6 +61,10 @@ func straight(cards []Card) bool {
 	return true
 }
 
+func flush(cards []Card) bool {
+	return cards[0].Suit == cards[1].Suit && cards[0].Suit == cards[2].Suit && cards[0].Suit == cards[3].Suit && cards[0].Suit == cards[4].Suit
+}
+
 func combinations(list []Card, select_num, buf int) (c chan []Card) {
 	c = make(chan []Card, buf)
 	go func() {
