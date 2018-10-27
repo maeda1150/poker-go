@@ -42,6 +42,16 @@ func threeOfAKind(cards []Card) bool {
 
 func straight(cards []Card) bool {
 	sort.Slice(cards, func(i, j int) bool { return cards[i].Number < cards[j].Number })
+	royals := []int{1, 10, 11, 12, 13}
+	isRoyal := true
+	for i, card := range cards {
+		if card.Number != royals[i] {
+			isRoyal = false
+		}
+	}
+	if isRoyal {
+		return true
+	}
 	baseNum := cards[0].Number
 	for i, card := range cards {
 		if card.Number != baseNum+i {

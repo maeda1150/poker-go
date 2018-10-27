@@ -5,10 +5,11 @@ import (
 )
 
 var (
-	exOnePair      []Card = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"s", 4}, Card{"h", 4}}
-	exTwoPair      []Card = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"h", 1}, Card{"h", 2}}
-	exThreeOfAKind []Card = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"h", 2}, Card{"d", 2}}
-	exStraight     []Card = []Card{Card{"s", 7}, Card{"s", 6}, Card{"s", 4}, Card{"h", 8}, Card{"d", 5}}
+	exOnePair       []Card = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"s", 4}, Card{"h", 4}}
+	exTwoPair       []Card = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"h", 1}, Card{"h", 2}}
+	exThreeOfAKind  []Card = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"h", 2}, Card{"d", 2}}
+	exStraight      []Card = []Card{Card{"s", 7}, Card{"s", 6}, Card{"s", 4}, Card{"h", 8}, Card{"d", 5}}
+	exRoyalStraight []Card = []Card{Card{"s", 10}, Card{"c", 13}, Card{"s", 1}, Card{"h", 11}, Card{"d", 12}}
 )
 
 func TestOnePair(t *testing.T) {
@@ -94,6 +95,11 @@ func TestStraight(t *testing.T) {
 	}
 
 	result = straight(exStraight)
+	if result == false {
+		t.Fatal("this is not straight.")
+	}
+
+	result = straight(exRoyalStraight)
 	if result == false {
 		t.Fatal("this is not straight.")
 	}
