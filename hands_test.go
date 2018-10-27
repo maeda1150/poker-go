@@ -43,3 +43,20 @@ func TestTwoPair(t *testing.T) {
 		t.Fatal("this is two pair.")
 	}
 }
+
+func TestThreeOfAKind(t *testing.T) {
+	result := threeOfAKind(exOnePair)
+	if result == true {
+		t.Fatal("this is three of a kind.")
+	}
+
+	result = threeOfAKind(exTwoPair)
+	if result == true {
+		t.Fatal("this is three of a kind.")
+	}
+
+	result = threeOfAKind(exThreeOfAKind)
+	if result == false {
+		t.Fatal("this is not three of a kind.")
+	}
+}

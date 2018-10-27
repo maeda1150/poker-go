@@ -25,6 +25,19 @@ func twoPair(cards []Card) bool {
 	return duplicatePair(set[0], set[1])
 }
 
+func threeOfAKind(cards []Card) bool {
+	comb := combinations(cards, 3, 10)
+	for com := range comb {
+		if com[0].Number == com[1].Number && com[0].Number == com[2].Number {
+			rest := restOfCards(cards, com)
+			if rest[0].Number != rest[1].Number {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func combinations(list []Card, select_num, buf int) (c chan []Card) {
 	c = make(chan []Card, buf)
 	go func() {
@@ -61,4 +74,21 @@ func duplicatePair(a []Card, b []Card) bool {
 		return false
 	}
 	return true
+}
+
+func restOfCards(a []Card, b []Card) []Card {
+	rest := []Card{}
+	for _, c := range a {
+		duplicate := false
+		for _, d := range b {
+			if d.Same(c) {
+				duplicate = true
+			}
+		}
+		if duplicate {
+			continue
+		}
+		rest = append(rest, c)
+	}
+	return rest
 }
