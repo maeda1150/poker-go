@@ -1,5 +1,7 @@
 package main
 
+import "sort"
+
 func onePair(cards []Card) bool {
 	comb := combinations(cards, 2, 10)
 	count := 0
@@ -36,6 +38,17 @@ func threeOfAKind(cards []Card) bool {
 		}
 	}
 	return false
+}
+
+func straight(cards []Card) bool {
+	sort.Slice(cards, func(i, j int) bool { return cards[i].Number < cards[j].Number })
+	baseNum := cards[0].Number
+	for i, card := range cards {
+		if card.Number != baseNum+i {
+			return false
+		}
+	}
+	return true
 }
 
 func combinations(list []Card, select_num, buf int) (c chan []Card) {
