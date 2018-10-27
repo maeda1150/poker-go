@@ -28,10 +28,10 @@ func main() {
 	fmt.Println(card.Valid())
 
 	cards := []Card{Card{"s", 10}, Card{"h", 11}, Card{"s", 9}, Card{"s", 7}, Card{"s", 1}}
-	result, _ := onePair(cards)
+	result := onePair(cards)
 	fmt.Println(result)
 
 	cards = []Card{Card{"s", 10}, Card{"h", 9}, Card{"s", 9}, Card{"s", 7}, Card{"s", 1}}
-	result, _ = onePair(cards)
+	result = onePair(cards)
 	fmt.Println(result)
 }
