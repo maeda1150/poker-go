@@ -2,9 +2,15 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
+	suits, nums := splitSuitsAndNumbers(os.Args[1])
+
+	if (len(suits) != 2) || (len(nums) != 2) {
+		os.Exit(1)
+	}
 
 	//cards := []string{"1", "2", "3", "4", "4", "6", "7"}
 	//result, _ := onePair(cards)
