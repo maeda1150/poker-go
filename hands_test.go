@@ -11,144 +11,165 @@ var (
 	exStraight      []Card = []Card{Card{"s", 7}, Card{"s", 6}, Card{"s", 4}, Card{"h", 8}, Card{"d", 5}}
 	exRoyalStraight []Card = []Card{Card{"s", 10}, Card{"c", 13}, Card{"s", 1}, Card{"h", 11}, Card{"d", 12}}
 	exFlush         []Card = []Card{Card{"c", 5}, Card{"c", 13}, Card{"c", 2}, Card{"c", 7}, Card{"c", 9}}
+	exFullHouse     []Card = []Card{Card{"c", 5}, Card{"s", 11}, Card{"d", 5}, Card{"h", 5}, Card{"c", 11}}
 )
 
 func TestOnePair(t *testing.T) {
-	result := onePair(exOnePair)
-	if result == false {
-		t.Fatal("this is not one pair.")
+	if !onePair(exOnePair) {
+		t.Fatal("expected one pair.")
 	}
 
-	result = onePair(exTwoPair)
-	if result == true {
-		t.Fatal("this is one pair.")
+	if onePair(exTwoPair) {
+		t.Fatal("expected not one pair.")
 	}
 
-	result = onePair(exThreeOfAKind)
-	if result == true {
-		t.Fatal("this is one pair.")
+	if onePair(exThreeOfAKind) {
+		t.Fatal("expected not one pair.")
 	}
 
-	result = onePair(exStraight)
-	if result == true {
-		t.Fatal("this is one pair.")
+	if onePair(exStraight) {
+		t.Fatal("expected not one pair.")
 	}
 
-	result = onePair(exFlush)
-	if result == true {
-		t.Fatal("this is one pair.")
+	if onePair(exFlush) {
+		t.Fatal("expected not one pair.")
+	}
+
+	if onePair(exFullHouse) {
+		t.Fatal("expected not one pair.")
 	}
 }
 
 func TestTwoPair(t *testing.T) {
-	result := twoPair(exOnePair)
-	if result == true {
-		t.Fatal("this is two pair.")
+	if twoPair(exOnePair) {
+		t.Fatal("ecpected not two pair.")
 	}
 
-	result = twoPair(exTwoPair)
-	if result == false {
-		t.Fatal("this is not two pair.")
+	if !twoPair(exTwoPair) {
+		t.Fatal("ecpected two pair.")
 	}
 
-	result = twoPair(exThreeOfAKind)
-	if result == true {
-		t.Fatal("this is two pair.")
+	if twoPair(exThreeOfAKind) {
+		t.Fatal("ecpected not two pair.")
 	}
 
-	result = twoPair(exStraight)
-	if result == true {
-		t.Fatal("this is two pair.")
+	if twoPair(exStraight) {
+		t.Fatal("ecpected not two pair.")
 	}
 
-	result = twoPair(exFlush)
-	if result == true {
-		t.Fatal("this is two pair.")
+	if twoPair(exFlush) {
+		t.Fatal("ecpected not two pair.")
+	}
+
+	if twoPair(exFullHouse) {
+		t.Fatal("ecpected not two pair.")
 	}
 }
 
 func TestThreeOfAKind(t *testing.T) {
-	result := threeOfAKind(exOnePair)
-	if result == true {
+	if threeOfAKind(exOnePair) {
+		t.Fatal("expected not three of a kind.")
+	}
+
+	if threeOfAKind(exTwoPair) {
+		t.Fatal("expected not three of a kind.")
+	}
+
+	if !threeOfAKind(exThreeOfAKind) {
+		t.Fatal("expected three of a kind.")
+	}
+
+	if threeOfAKind(exStraight) {
 		t.Fatal("this is three of a kind.")
 	}
 
-	result = threeOfAKind(exTwoPair)
-	if result == true {
-		t.Fatal("this is three of a kind.")
+	if threeOfAKind(exFlush) {
+		t.Fatal("expected not three of a kind.")
 	}
 
-	result = threeOfAKind(exThreeOfAKind)
-	if result == false {
-		t.Fatal("this is not three of a kind.")
-	}
-
-	result = threeOfAKind(exStraight)
-	if result == true {
-		t.Fatal("this is three of a kind.")
-	}
-
-	result = threeOfAKind(exFlush)
-	if result == true {
-		t.Fatal("this is three of a kind.")
+	if threeOfAKind(exFullHouse) {
+		t.Fatal("expected not three of a kind.")
 	}
 }
 
 func TestStraight(t *testing.T) {
-	result := straight(exOnePair)
-	if result == true {
-		t.Fatal("this is straight.")
+	if straight(exOnePair) {
+		t.Fatal("expected not straight.")
 	}
 
-	result = straight(exTwoPair)
-	if result == true {
-		t.Fatal("this is straight.")
+	if straight(exTwoPair) {
+		t.Fatal("expected not straight.")
 	}
 
-	result = straight(exThreeOfAKind)
-	if result == true {
-		t.Fatal("this is straight.")
+	if straight(exThreeOfAKind) {
+		t.Fatal("expected not straight.")
 	}
 
-	result = straight(exStraight)
-	if result == false {
-		t.Fatal("this is not straight.")
+	if !straight(exStraight) {
+		t.Fatal("expected straight.")
 	}
 
-	result = straight(exRoyalStraight)
-	if result == false {
-		t.Fatal("this is not straight.")
+	if !straight(exRoyalStraight) {
+		t.Fatal("expected not straight.")
 	}
 
-	result = straight(exFlush)
-	if result == true {
-		t.Fatal("this is straight.")
+	if straight(exFlush) {
+		t.Fatal("expected not straight.")
+	}
+
+	if straight(exFullHouse) {
+		t.Fatal("expected not straight.")
 	}
 }
 
 func TestFlush(t *testing.T) {
-	result := flush(exOnePair)
-	if result == true {
-		t.Fatal("this is flush.")
+	if flush(exOnePair) {
+		t.Fatal("expected not flush.")
 	}
 
-	result = flush(exTwoPair)
-	if result == true {
-		t.Fatal("this is flush.")
+	if flush(exTwoPair) {
+		t.Fatal("expected not flush.")
 	}
 
-	result = flush(exThreeOfAKind)
-	if result == true {
-		t.Fatal("this is flush.")
+	if flush(exThreeOfAKind) {
+		t.Fatal("expected not flush.")
 	}
 
-	result = flush(exStraight)
-	if result == true {
-		t.Fatal("this is flush.")
+	if flush(exStraight) {
+		t.Fatal("expected not flush.")
 	}
 
-	result = flush(exFlush)
-	if result == false {
-		t.Fatal("this is not flush.")
+	if !flush(exFlush) {
+		t.Fatal("expected flush.")
+	}
+
+	if flush(exFullHouse) {
+		t.Fatal("expected not flush.")
+	}
+}
+
+func TestFullHouse(t *testing.T) {
+	if fullHouse(exOnePair) {
+		t.Fatal("expected not full house.")
+	}
+
+	if fullHouse(exTwoPair) {
+		t.Fatal("expected not full house.")
+	}
+
+	if fullHouse(exThreeOfAKind) {
+		t.Fatal("expected not full house.")
+	}
+
+	if fullHouse(exStraight) {
+		t.Fatal("expected not full house.")
+	}
+
+	if fullHouse(exFlush) {
+		t.Fatal("expected not full house.")
+	}
+
+	if !fullHouse(exFullHouse) {
+		t.Fatal("expected full house.")
 	}
 }

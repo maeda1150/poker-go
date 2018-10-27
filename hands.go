@@ -65,6 +65,19 @@ func flush(cards []Card) bool {
 	return cards[0].Suit == cards[1].Suit && cards[0].Suit == cards[2].Suit && cards[0].Suit == cards[3].Suit && cards[0].Suit == cards[4].Suit
 }
 
+func fullHouse(cards []Card) bool {
+	comb := combinations(cards, 3, 10)
+	for com := range comb {
+		if com[0].Number == com[1].Number && com[0].Number == com[2].Number {
+			rest := restOfCards(cards, com)
+			if com[0].Number != rest[0].Number && rest[0].Number == rest[1].Number {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func combinations(list []Card, select_num, buf int) (c chan []Card) {
 	c = make(chan []Card, buf)
 	go func() {
