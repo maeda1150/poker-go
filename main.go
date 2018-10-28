@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -19,7 +18,7 @@ func main() {
 	hands := createCardsFromSuitsAndNumbers(suits, nums)
 	fmt.Println(hands)
 
-	tryTimes := 10000
+	tryTimes := 1000
 
 	countFourOfAKind := 0
 	countFullHouse := 0
@@ -83,11 +82,11 @@ func main() {
 		}
 	}
 
-	fmt.Println("OnePair      : " + strconv.Itoa(countOnePair))
-	fmt.Println("TwoPair      : " + strconv.Itoa(countTwoPair))
-	fmt.Println("ThreeOfAKind : " + strconv.Itoa(countThreeOfAKind))
-	fmt.Println("Straight     : " + strconv.Itoa(countStraight))
-	fmt.Println("Flush        : " + strconv.Itoa(countFlush))
-	fmt.Println("FullHouse    : " + strconv.Itoa(countFullHouse))
-	fmt.Println("FourOfAKind  : " + strconv.Itoa(countFourOfAKind))
+	fmt.Printf("OnePair      : %d ( %f percent )\n", countOnePair, float64(countOnePair)/float64(tryTimes)*100)
+	fmt.Printf("TwoPair      : %d ( %f percent )\n", countTwoPair, float64(countTwoPair)/float64(tryTimes)*100)
+	fmt.Printf("ThreeOfAKind : %d ( %f percent )\n", countThreeOfAKind, float64(countThreeOfAKind)/float64(tryTimes)*100)
+	fmt.Printf("Straight     : %d ( %f percent )\n", countStraight, float64(countStraight)/float64(tryTimes)*100)
+	fmt.Printf("Flush        : %d ( %f percent )\n", countFlush, float64(countFlush)/float64(tryTimes)*100)
+	fmt.Printf("FullHouse    : %d ( %f percent )\n", countFullHouse, float64(countFullHouse)/float64(tryTimes)*100)
+	fmt.Printf("FourOfAKind  : %d ( %f percent )\n", countFourOfAKind, float64(countFourOfAKind)/float64(tryTimes)*100)
 }
