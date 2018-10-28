@@ -81,3 +81,25 @@ func playPreFlop(hands []Card) Result {
 	}
 	return result
 }
+
+func calcResultCount(results []Result) ResultCount {
+	resultCount := NewResultCount()
+	for _, result := range results {
+		if result.IsFourOfAKind {
+			resultCount.CountFourOfAKind++
+		} else if result.IsFullHouse {
+			resultCount.CountFullHouse++
+		} else if result.IsFlush {
+			resultCount.CountFlush++
+		} else if result.IsStraight {
+			resultCount.CountStraight++
+		} else if result.IsThreeOfAKind {
+			resultCount.CountThreeOfAKind++
+		} else if result.IsTwoPair {
+			resultCount.CountTwoPair++
+		} else if result.IsOnePair {
+			resultCount.CountOnePair++
+		}
+	}
+	return resultCount
+}
