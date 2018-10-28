@@ -123,6 +123,18 @@ func straightFlush(cards []Card) bool {
 	return straightImplementation(cards) && flushImplementation(cards)
 }
 
+func onePairWithHands(cards []Card, hands []Card) bool {
+	if !onePair(cards) {
+		return false
+	}
+	for _, card := range cards {
+		if card.Same(hands[0]) || card.Same(hands[1]) {
+			return true
+		}
+	}
+	return false
+}
+
 func duplicatePair(a []Card, b []Card) bool {
 	if a[0].Same(b[0]) {
 		return false
