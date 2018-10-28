@@ -93,6 +93,10 @@ func fourOfAKind(cards []Card) bool {
 	return false
 }
 
+func straightFlush(cards []Card) bool {
+	return straight(cards) && flush(cards)
+}
+
 func combinations(list []Card, select_num, buf int) (c chan []Card) {
 	c = make(chan []Card, buf)
 	go func() {

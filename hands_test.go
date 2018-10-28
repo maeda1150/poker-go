@@ -13,6 +13,7 @@ var (
 	exFlush         []Card = []Card{Card{"c", 5}, Card{"c", 13}, Card{"c", 2}, Card{"c", 7}, Card{"c", 9}}
 	exFullHouse     []Card = []Card{Card{"c", 5}, Card{"s", 11}, Card{"d", 5}, Card{"h", 5}, Card{"c", 11}}
 	exFourOfAKind   []Card = []Card{Card{"c", 5}, Card{"s", 5}, Card{"d", 8}, Card{"h", 5}, Card{"d", 5}}
+	exStraightFlush []Card = []Card{Card{"d", 6}, Card{"d", 9}, Card{"d", 7}, Card{"d", 5}, Card{"d", 8}}
 )
 
 func TestOnePair(t *testing.T) {
@@ -226,5 +227,31 @@ func TestFourOfAKind(t *testing.T) {
 
 	if !fourOfAKind(exFourOfAKind) {
 		t.Fatal("expected four of a kind.")
+	}
+}
+
+func TestStraightFlush(t *testing.T) {
+	if straightFlush(exOnePair) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if straightFlush(exTwoPair) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if straightFlush(exThreeOfAKind) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if straightFlush(exFullHouse) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if straightFlush(exFourOfAKind) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if !straightFlush(exStraightFlush) {
+		t.Fatal("expected straight flush.")
 	}
 }
