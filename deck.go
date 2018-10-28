@@ -2,6 +2,7 @@ package main
 
 import (
 	"math/rand"
+	"time"
 )
 
 func createDeck() []Card {
@@ -32,6 +33,7 @@ func removeCardsFromDeck(deck []Card, cards []Card) []Card {
 }
 
 func shuffleDeck(deck []Card) {
+	rand.Seed(time.Now().UnixNano())
 	times := 5 + rand.Intn(5)
 	for t := 0; t < times; t++ {
 		n := len(deck)

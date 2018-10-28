@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
+	"strconv"
+	"time"
 )
 
 func main() {
@@ -18,44 +21,73 @@ func main() {
 
 	tryTimes := 10000
 
-	deck := createDeck()
-	fmt.Println(deck)
-
-	deck = removeCardsFromDeck(deck, hands)
-	fmt.Println(deck)
-
-	shuffleDeck(deck)
-	fmt.Println(deck)
+	countFourOfAKind := 0
+	countFullHouse := 0
+	countFlush := 0
+	countStraight := 0
+	countThreeOfAKind := 0
+	countTwoPair := 0
+	countOnePair := 0
 
 	for t := 0; t < tryTimes; t++ {
+		deck := createDeck()
+		deck = removeCardsFromDeck(deck, hands)
+		shuffleDeck(deck)
+		boad := []Card{}
+		for i := 0; i < 5; i++ {
+			rand.Seed(time.Now().UnixNano())
+			boad = append(boad, deck[rand.Intn(50)])
+		}
+		all := append(hands, boad...)
+
+		isFourOfAKind := false
+		isFullHouse := false
+		isFlush := false
+		isStraight := false
+		isThreeOfAKind := false
+		isTwoPair := false
+		isOnePair := false
+
+		for com := range combinations(all, 5, 20) {
+			if fourOfAKind(com) {
+				isFourOfAKind = true
+			} else if fullHouse(com) {
+				isFullHouse = true
+			} else if flush(com) {
+				isFlush = true
+			} else if straight(com) {
+				isStraight = true
+			} else if threeOfAKind(com) {
+				isThreeOfAKind = true
+			} else if twoPair(com) {
+				isTwoPair = true
+			} else if onePair(com) {
+				isOnePair = true
+			}
+		}
+
+		if isFourOfAKind {
+			countFourOfAKind++
+		} else if isFullHouse {
+			countFullHouse++
+		} else if isFlush {
+			countFlush++
+		} else if isStraight {
+			countStraight++
+		} else if isThreeOfAKind {
+			countThreeOfAKind++
+		} else if isTwoPair {
+			countTwoPair++
+		} else if isOnePair {
+			countOnePair++
+		}
 	}
 
-	//cards := []string{"1", "2", "3", "4", "4", "6", "7"}
-	//result, _ := onePair(cards)
-	//fmt.Println(result)
-
-	//cards = []string{"1", "2", "3", "4", "5", "6", "7"}
-	//result, _ = onePair(cards)
-	//fmt.Println(result)
-
-	//cards = []string{"11", "22", "33", "22", "55", "66", "77"}
-	//result, _ = onePair(cards)
-	//fmt.Println(result)
-
-	card := Card{"s", 10}
-	fmt.Println(card.Valid())
-
-	card = Card{"s", 14}
-	fmt.Println(card.Valid())
-
-	card = Card{"v", 10}
-	fmt.Println(card.Valid())
-
-	cards := []Card{Card{"s", 10}, Card{"h", 11}, Card{"s", 9}, Card{"s", 7}, Card{"s", 1}}
-	result := onePair(cards)
-	fmt.Println(result)
-
-	cards = []Card{Card{"s", 10}, Card{"h", 9}, Card{"s", 9}, Card{"s", 7}, Card{"s", 1}}
-	result = onePair(cards)
-	fmt.Println(result)
+	fmt.Println("OnePair      : " + strconv.Itoa(countOnePair))
+	fmt.Println("TwoPair      : " + strconv.Itoa(countTwoPair))
+	fmt.Println("ThreeOfAKind : " + strconv.Itoa(countThreeOfAKind))
+	fmt.Println("Straight     : " + strconv.Itoa(countStraight))
+	fmt.Println("Flush        : " + strconv.Itoa(countFlush))
+	fmt.Println("FullHouse    : " + strconv.Itoa(countFullHouse))
+	fmt.Println("FourOfAKind  : " + strconv.Itoa(countFourOfAKind))
 }
