@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 )
 
 func main() {
@@ -14,16 +13,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	hands := []Card{}
-	for i, s := range suits {
-		n, _ := strconv.Atoi(nums[i])
-		hand := Card{s, n}
-		if !hand.Valid() {
-			fmt.Println("invalid card")
-			os.Exit(1)
-		}
-		hands = append(hands, hand)
-	}
+	hands := createCardsFromSuitsAndNumbers(suits, nums)
+	fmt.Println(hands)
 
 	//cards := []string{"1", "2", "3", "4", "4", "6", "7"}
 	//result, _ := onePair(cards)

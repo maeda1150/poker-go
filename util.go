@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"os"
+	"strconv"
+)
+
 func splitSuitsAndNumbers(chars string) ([]string, []string) {
 	s := []string{"s", "h", "d", "c"}
 	suits := []string{}
@@ -20,6 +26,20 @@ func splitSuitsAndNumbers(chars string) ([]string, []string) {
 		}
 	}
 	return suits, nums
+}
+
+func createCardsFromSuitsAndNumbers(suits []string, numbers []string) []Card {
+	cards := []Card{}
+	for i, s := range suits {
+		n, _ := strconv.Atoi(numbers[i])
+		card := Card{s, n}
+		if !card.Valid() {
+			fmt.Println("invalid card")
+			os.Exit(1)
+		}
+		cards = append(cards, card)
+	}
+	return cards
 }
 
 func containsString(s []string, e string) bool {
