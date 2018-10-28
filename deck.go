@@ -10,3 +10,19 @@ func createDeck() []Card {
 	}
 	return cards
 }
+
+func removeCardsFromDeck(deck []Card, cards []Card) []Card {
+	newDeck := []Card{}
+	for _, d := range deck {
+		same := false
+		for _, card := range cards {
+			if d.Same(card) {
+				same = true
+			}
+		}
+		if !same {
+			newDeck = append(newDeck, d)
+		}
+	}
+	return newDeck
+}

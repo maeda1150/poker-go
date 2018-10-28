@@ -18,9 +18,12 @@ func main() {
 
 	tryTimes := 10000
 
+	deck := createDeck()
+	fmt.Println(deck)
+
+	deck = removeCardsFromDeck(deck, hands)
+	fmt.Println(deck)
 	for t := 0; t < tryTimes; t++ {
-		deck := createDeck()
-		fmt.Println(deck)
 	}
 
 	//cards := []string{"1", "2", "3", "4", "4", "6", "7"}
