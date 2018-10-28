@@ -2,13 +2,15 @@ package main
 
 import (
 	"sort"
+
+	"github.com/notnil/combos"
 )
 
 func onePair(cards []Card) bool {
-	comb := combinations(cards, 2, 10)
+	comb := combos.New(5, 2)
 	count := 0
-	for com := range comb {
-		if com[0].Number == com[1].Number {
+	for _, com := range comb {
+		if cards[com[0]].Number == cards[com[1]].Number {
 			count++
 		}
 	}
@@ -16,11 +18,11 @@ func onePair(cards []Card) bool {
 }
 
 func twoPair(cards []Card) bool {
-	comb := combinations(cards, 2, 10)
+	comb := combos.New(5, 2)
 	set := [][]Card{}
-	for com := range comb {
-		if com[0].Number == com[1].Number {
-			set = append(set, []Card{com[0], com[1]})
+	for _, com := range comb {
+		if cards[com[0]].Number == cards[com[1]].Number {
+			set = append(set, []Card{cards[com[0]], cards[com[1]]})
 		}
 	}
 	if len(set) != 2 {
@@ -33,10 +35,13 @@ func threeOfAKind(cards []Card) bool {
 	if fourOfAKind(cards) {
 		return false
 	}
-	comb := combinations(cards, 3, 10)
-	for com := range comb {
-		if com[0].Number == com[1].Number && com[0].Number == com[2].Number {
-			rest := restOfCards(cards, com)
+	comb := combos.New(5, 3)
+	for _, com := range comb {
+		a := cards[com[0]]
+		b := cards[com[1]]
+		c := cards[com[2]]
+		if a.Number == b.Number && a.Number == c.Number {
+			rest := restOfCards(cards, []Card{a, b, c})
 			if rest[0].Number != rest[1].Number {
 				return true
 			}
@@ -85,11 +90,14 @@ func flushImplementation(cards []Card) bool {
 }
 
 func fullHouse(cards []Card) bool {
-	comb := combinations(cards, 3, 10)
-	for com := range comb {
-		if com[0].Number == com[1].Number && com[0].Number == com[2].Number {
-			rest := restOfCards(cards, com)
-			if com[0].Number != rest[0].Number && rest[0].Number == rest[1].Number {
+	comb := combos.New(5, 3)
+	for _, com := range comb {
+		a := cards[com[0]]
+		b := cards[com[1]]
+		c := cards[com[2]]
+		if a.Number == b.Number && a.Number == c.Number {
+			rest := restOfCards(cards, []Card{a, b, c})
+			if a.Number != rest[0].Number && rest[0].Number == rest[1].Number {
 				return true
 			}
 		}
@@ -98,9 +106,13 @@ func fullHouse(cards []Card) bool {
 }
 
 func fourOfAKind(cards []Card) bool {
-	comb := combinations(cards, 4, 10)
-	for com := range comb {
-		if com[0].Number == com[1].Number && com[0].Number == com[2].Number && com[0].Number == com[3].Number {
+	comb := combos.New(5, 4)
+	for _, com := range comb {
+		a := cards[com[0]]
+		b := cards[com[1]]
+		c := cards[com[2]]
+		d := cards[com[3]]
+		if a.Number == b.Number && a.Number == c.Number && a.Number == d.Number {
 			return true
 		}
 	}
@@ -109,28 +121,6 @@ func fourOfAKind(cards []Card) bool {
 
 func straightFlush(cards []Card) bool {
 	return straightImplementation(cards) && flushImplementation(cards)
-}
-
-func combinations(list []Card, select_num, buf int) (c chan []Card) {
-	c = make(chan []Card, buf)
-	go func() {
-		defer close(c)
-		switch {
-		case select_num == 0:
-			c <- []Card{}
-		case select_num == len(list):
-			c <- list
-		case len(list) < select_num:
-			return
-		default:
-			for i := 0; i < len(list); i++ {
-				for sub_comb := range combinations(list[i+1:], select_num-1, buf) {
-					c <- append([]Card{list[i]}, sub_comb...)
-				}
-			}
-		}
-	}()
-	return
 }
 
 func duplicatePair(a []Card, b []Card) bool {

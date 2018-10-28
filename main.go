@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"sync"
+	"testing"
 )
 
 func main() {
@@ -29,27 +31,25 @@ func main() {
 
 	resultCount := NewResultCount()
 
-	//	bench := testing.Benchmark(func(b *testing.B) {
+	bench := testing.Benchmark(func(b *testing.B) {
 
-	//results := []Result{}
-	results := make(chan Result, 1)
-	//	wg := sync.WaitGroup{}
-	for t := 0; t < tryTimes; t++ {
-		//		wg.Add(1)
-		go func(hands []Card) {
-			result := playPreFlop(hands)
-			results <- result
-			//wg.Done()
-		}(hands)
-	}
-	//	wg.Wait()
+		//results := []Result{}
+		wg := new(sync.WaitGroup)
+		results := make(chan Result, 3)
+		for t := 0; t < tryTimes; t++ {
+			wg.Add(1)
+			go func(hands []Card) {
+				defer wg.Done()
+				playPreFlop(hands, results)
+			}(hands)
+		}
+		go func() {
+			wg.Wait()
+			close(results)
+		}()
 
-	//r := []Result{}
-	//for result := range results {
-	//	r = append(r, result)
-	//}
-	resultCount = calcResultCount(results)
-	//	})
+		resultCount = calcResultCount(results)
+	})
 
 	fmt.Printf("OnePair        : %d ( %f percent )\n", resultCount.CountOnePair, float64(resultCount.CountOnePair)/float64(tryTimes)*100)
 	fmt.Printf("TwoPair        : %d ( %f percent )\n", resultCount.CountTwoPair, float64(resultCount.CountTwoPair)/float64(tryTimes)*100)
@@ -59,5 +59,5 @@ func main() {
 	fmt.Printf("FullHouse      : %d ( %f percent )\n", resultCount.CountFullHouse, float64(resultCount.CountFullHouse)/float64(tryTimes)*100)
 	fmt.Printf("FourOfAKind    : %d ( %f percent )\n", resultCount.CountFourOfAKind, float64(resultCount.CountFourOfAKind)/float64(tryTimes)*100)
 	fmt.Printf("StraightFlush  : %d ( %f percent )\n", resultCount.CountStraightFlush, float64(resultCount.CountStraightFlush)/float64(tryTimes)*100)
-	//	fmt.Println(strconv.FormatFloat(bench.T.Seconds(), 'f', 20, 64) + " sec")
+	fmt.Println(strconv.FormatFloat(bench.T.Seconds(), 'f', 20, 64) + " sec")
 }
