@@ -3,13 +3,26 @@ package main
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func main() {
 	suits, nums := splitSuitsAndNumbers(os.Args[1])
 
 	if (len(suits) != 2) || (len(nums) != 2) {
+		fmt.Println("invalid card length")
 		os.Exit(1)
+	}
+
+	hands := []Card{}
+	for i, s := range suits {
+		n, _ := strconv.Atoi(nums[i])
+		hand := Card{s, n}
+		if !hand.Valid() {
+			fmt.Println("invalid card")
+			os.Exit(1)
+		}
+		hands = append(hands, hand)
 	}
 
 	//cards := []string{"1", "2", "3", "4", "4", "6", "7"}
