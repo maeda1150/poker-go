@@ -20,7 +20,15 @@ func main() {
 	hands := createCardsFromSuitsAndNumbers(suits, nums)
 	fmt.Println(hands)
 
-	tryTimes := 1000
+	tryTimes := 10000
+	if len(os.Args) >= 2 {
+		times, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("times is not signed int.")
+			os.Exit(1)
+		}
+		tryTimes = times
+	}
 
 	countFourOfAKind := 0
 	countFullHouse := 0
@@ -51,7 +59,7 @@ func main() {
 			isTwoPair := false
 			isOnePair := false
 
-			for com := range combinations(all, 5, 20) {
+			for com := range combinations(all, 5, 10) {
 				if fourOfAKind(com) {
 					isFourOfAKind = true
 				} else if fullHouse(com) {
