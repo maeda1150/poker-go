@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strconv"
+	"testing"
 	"time"
 )
 
@@ -28,59 +30,62 @@ func main() {
 	countTwoPair := 0
 	countOnePair := 0
 
-	for t := 0; t < tryTimes; t++ {
-		deck := createDeck()
-		deck = removeCardsFromDeck(deck, hands)
-		shuffleDeck(deck)
-		boad := []Card{}
-		for i := 0; i < 5; i++ {
-			rand.Seed(time.Now().UnixNano())
-			boad = append(boad, deck[rand.Intn(50)])
-		}
-		all := append(hands, boad...)
+	bench := testing.Benchmark(func(b *testing.B) {
 
-		isFourOfAKind := false
-		isFullHouse := false
-		isFlush := false
-		isStraight := false
-		isThreeOfAKind := false
-		isTwoPair := false
-		isOnePair := false
+		for t := 0; t < tryTimes; t++ {
+			deck := createDeck()
+			deck = removeCardsFromDeck(deck, hands)
+			shuffleDeck(deck)
+			boad := []Card{}
+			for i := 0; i < 5; i++ {
+				rand.Seed(time.Now().UnixNano())
+				boad = append(boad, deck[rand.Intn(50)])
+			}
+			all := append(hands, boad...)
 
-		for com := range combinations(all, 5, 20) {
-			if fourOfAKind(com) {
-				isFourOfAKind = true
-			} else if fullHouse(com) {
-				isFullHouse = true
-			} else if flush(com) {
-				isFlush = true
-			} else if straight(com) {
-				isStraight = true
-			} else if threeOfAKind(com) {
-				isThreeOfAKind = true
-			} else if twoPair(com) {
-				isTwoPair = true
-			} else if onePair(com) {
-				isOnePair = true
+			isFourOfAKind := false
+			isFullHouse := false
+			isFlush := false
+			isStraight := false
+			isThreeOfAKind := false
+			isTwoPair := false
+			isOnePair := false
+
+			for com := range combinations(all, 5, 20) {
+				if fourOfAKind(com) {
+					isFourOfAKind = true
+				} else if fullHouse(com) {
+					isFullHouse = true
+				} else if flush(com) {
+					isFlush = true
+				} else if straight(com) {
+					isStraight = true
+				} else if threeOfAKind(com) {
+					isThreeOfAKind = true
+				} else if twoPair(com) {
+					isTwoPair = true
+				} else if onePair(com) {
+					isOnePair = true
+				}
+			}
+
+			if isFourOfAKind {
+				countFourOfAKind++
+			} else if isFullHouse {
+				countFullHouse++
+			} else if isFlush {
+				countFlush++
+			} else if isStraight {
+				countStraight++
+			} else if isThreeOfAKind {
+				countThreeOfAKind++
+			} else if isTwoPair {
+				countTwoPair++
+			} else if isOnePair {
+				countOnePair++
 			}
 		}
-
-		if isFourOfAKind {
-			countFourOfAKind++
-		} else if isFullHouse {
-			countFullHouse++
-		} else if isFlush {
-			countFlush++
-		} else if isStraight {
-			countStraight++
-		} else if isThreeOfAKind {
-			countThreeOfAKind++
-		} else if isTwoPair {
-			countTwoPair++
-		} else if isOnePair {
-			countOnePair++
-		}
-	}
+	})
 
 	fmt.Printf("OnePair      : %d ( %f percent )\n", countOnePair, float64(countOnePair)/float64(tryTimes)*100)
 	fmt.Printf("TwoPair      : %d ( %f percent )\n", countTwoPair, float64(countTwoPair)/float64(tryTimes)*100)
@@ -89,4 +94,5 @@ func main() {
 	fmt.Printf("Flush        : %d ( %f percent )\n", countFlush, float64(countFlush)/float64(tryTimes)*100)
 	fmt.Printf("FullHouse    : %d ( %f percent )\n", countFullHouse, float64(countFullHouse)/float64(tryTimes)*100)
 	fmt.Printf("FourOfAKind  : %d ( %f percent )\n", countFourOfAKind, float64(countFourOfAKind)/float64(tryTimes)*100)
+	fmt.Println(strconv.FormatFloat(bench.T.Seconds(), 'f', 20, 64) + " sec")
 }
