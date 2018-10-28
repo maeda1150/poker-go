@@ -66,7 +66,7 @@ func playPreFlop(hands []Card) Result {
 	}
 	all := append(hands, boad...)
 
-	for com := range combinations(all, 5, 10) {
+	for com := range combinations(all, 5, 1) {
 		if straightFlush(com) {
 			result.IsStraightFlush = true
 		} else if fourOfAKind(com) {
@@ -88,9 +88,9 @@ func playPreFlop(hands []Card) Result {
 	return result
 }
 
-func calcResultCount(results []Result) ResultCount {
+func calcResultCount(results chan Result) ResultCount {
 	resultCount := NewResultCount()
-	for _, result := range results {
+	for result := range results {
 		if result.IsStraightFlush {
 			resultCount.CountStraightFlush++
 		} else if result.IsFourOfAKind {
