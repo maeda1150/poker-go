@@ -16,6 +16,13 @@ func main() {
 	hands := createCardsFromSuitsAndNumbers(suits, nums)
 	fmt.Println(hands)
 
+	tryTimes := 10000
+
+	for t := 0; t < tryTimes; t++ {
+		deck := createDeck()
+		fmt.Println(deck)
+	}
+
 	//cards := []string{"1", "2", "3", "4", "4", "6", "7"}
 	//result, _ := onePair(cards)
 	//fmt.Println(result)
