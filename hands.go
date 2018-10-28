@@ -46,6 +46,13 @@ func threeOfAKind(cards []Card) bool {
 }
 
 func straight(cards []Card) bool {
+	if straightFlush(cards) {
+		return false
+	}
+	return straightImplementation(cards)
+}
+
+func straightImplementation(cards []Card) bool {
 	sort.Slice(cards, func(i, j int) bool { return cards[i].Number < cards[j].Number })
 	royals := []int{1, 10, 11, 12, 13}
 	isRoyal := true
@@ -67,6 +74,13 @@ func straight(cards []Card) bool {
 }
 
 func flush(cards []Card) bool {
+	if straightFlush(cards) {
+		return false
+	}
+	return flushImplementation(cards)
+}
+
+func flushImplementation(cards []Card) bool {
 	return cards[0].Suit == cards[1].Suit && cards[0].Suit == cards[2].Suit && cards[0].Suit == cards[3].Suit && cards[0].Suit == cards[4].Suit
 }
 
@@ -94,7 +108,7 @@ func fourOfAKind(cards []Card) bool {
 }
 
 func straightFlush(cards []Card) bool {
-	return straight(cards) && flush(cards)
+	return straightImplementation(cards) && flushImplementation(cards)
 }
 
 func combinations(list []Card, select_num, buf int) (c chan []Card) {

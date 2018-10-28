@@ -44,6 +44,10 @@ func TestOnePair(t *testing.T) {
 	if onePair(exFourOfAKind) {
 		t.Fatal("expected not one pair.")
 	}
+
+	if onePair(exStraightFlush) {
+		t.Fatal("expected not one pair.")
+	}
 }
 
 func TestTwoPair(t *testing.T) {
@@ -74,6 +78,10 @@ func TestTwoPair(t *testing.T) {
 	if twoPair(exFourOfAKind) {
 		t.Fatal("ecpected not two pair.")
 	}
+
+	if twoPair(exStraightFlush) {
+		t.Fatal("ecpected not two pair.")
+	}
 }
 
 func TestThreeOfAKind(t *testing.T) {
@@ -102,6 +110,10 @@ func TestThreeOfAKind(t *testing.T) {
 	}
 
 	if threeOfAKind(exFourOfAKind) {
+		t.Fatal("expected not three of a kind.")
+	}
+
+	if threeOfAKind(exStraightFlush) {
 		t.Fatal("expected not three of a kind.")
 	}
 }
@@ -138,6 +150,10 @@ func TestStraight(t *testing.T) {
 	if straight(exFourOfAKind) {
 		t.Fatal("expected not straight.")
 	}
+
+	if straight(exStraightFlush) {
+		t.Fatal("expected not straight.")
+	}
 }
 
 func TestFlush(t *testing.T) {
@@ -166,6 +182,10 @@ func TestFlush(t *testing.T) {
 	}
 
 	if flush(exFourOfAKind) {
+		t.Fatal("expected not flush.")
+	}
+
+	if flush(exStraightFlush) {
 		t.Fatal("expected not flush.")
 	}
 }
@@ -198,6 +218,10 @@ func TestFullHouse(t *testing.T) {
 	if fullHouse(exFourOfAKind) {
 		t.Fatal("expected full house.")
 	}
+
+	if fullHouse(exStraightFlush) {
+		t.Fatal("expected full house.")
+	}
 }
 
 func TestFourOfAKind(t *testing.T) {
@@ -228,6 +252,10 @@ func TestFourOfAKind(t *testing.T) {
 	if !fourOfAKind(exFourOfAKind) {
 		t.Fatal("expected four of a kind.")
 	}
+
+	if fourOfAKind(exStraightFlush) {
+		t.Fatal("expected four of a kind.")
+	}
 }
 
 func TestStraightFlush(t *testing.T) {
@@ -240,6 +268,14 @@ func TestStraightFlush(t *testing.T) {
 	}
 
 	if straightFlush(exThreeOfAKind) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if straightFlush(exStraight) {
+		t.Fatal("expected not straight flush.")
+	}
+
+	if straightFlush(exFlush) {
 		t.Fatal("expected not straight flush.")
 	}
 
