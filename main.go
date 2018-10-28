@@ -23,6 +23,10 @@ func main() {
 
 	deck = removeCardsFromDeck(deck, hands)
 	fmt.Println(deck)
+
+	shuffleDeck(deck)
+	fmt.Println(deck)
+
 	for t := 0; t < tryTimes; t++ {
 	}
 

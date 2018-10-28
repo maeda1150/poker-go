@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math/rand"
+)
+
 func createDeck() []Card {
 	cards := []Card{}
 	for _, suit := range []string{"s", "h", "d", "c"} {
@@ -25,4 +29,15 @@ func removeCardsFromDeck(deck []Card, cards []Card) []Card {
 		}
 	}
 	return newDeck
+}
+
+func shuffleDeck(deck []Card) {
+	times := 5 + rand.Intn(5)
+	for t := 0; t < times; t++ {
+		n := len(deck)
+		for i := n - 1; i >= 0; i-- {
+			j := rand.Intn(i + 1)
+			deck[i], deck[j] = deck[j], deck[i]
+		}
+	}
 }
