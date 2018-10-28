@@ -6,17 +6,19 @@ import (
 )
 
 type Result struct {
-	IsFourOfAKind  bool
-	IsFullHouse    bool
-	IsFlush        bool
-	IsStraight     bool
-	IsThreeOfAKind bool
-	IsTwoPair      bool
-	IsOnePair      bool
+	IsStraightFlush bool
+	IsFourOfAKind   bool
+	IsFullHouse     bool
+	IsFlush         bool
+	IsStraight      bool
+	IsThreeOfAKind  bool
+	IsTwoPair       bool
+	IsOnePair       bool
 }
 
 func NewResult() Result {
 	result := Result{}
+	result.IsStraightFlush = false
 	result.IsFourOfAKind = false
 	result.IsFullHouse = false
 	result.IsFlush = false
@@ -28,17 +30,19 @@ func NewResult() Result {
 }
 
 type ResultCount struct {
-	CountFourOfAKind  int
-	CountFullHouse    int
-	CountFlush        int
-	CountStraight     int
-	CountThreeOfAKind int
-	CountTwoPair      int
-	CountOnePair      int
+	CountStraightFlush int
+	CountFourOfAKind   int
+	CountFullHouse     int
+	CountFlush         int
+	CountStraight      int
+	CountThreeOfAKind  int
+	CountTwoPair       int
+	CountOnePair       int
 }
 
 func NewResultCount() ResultCount {
 	resultCount := ResultCount{}
+	resultCount.CountStraightFlush = 0
 	resultCount.CountFourOfAKind = 0
 	resultCount.CountFullHouse = 0
 	resultCount.CountFlush = 0
@@ -63,7 +67,9 @@ func playPreFlop(hands []Card) Result {
 	all := append(hands, boad...)
 
 	for com := range combinations(all, 5, 10) {
-		if fourOfAKind(com) {
+		if straightFlush(com) {
+			result.IsStraightFlush = true
+		} else if fourOfAKind(com) {
 			result.IsFourOfAKind = true
 		} else if fullHouse(com) {
 			result.IsFullHouse = true
@@ -85,7 +91,9 @@ func playPreFlop(hands []Card) Result {
 func calcResultCount(results []Result) ResultCount {
 	resultCount := NewResultCount()
 	for _, result := range results {
-		if result.IsFourOfAKind {
+		if result.IsStraightFlush {
+			resultCount.CountStraightFlush++
+		} else if result.IsFourOfAKind {
 			resultCount.CountFourOfAKind++
 		} else if result.IsFullHouse {
 			resultCount.CountFullHouse++
