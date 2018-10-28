@@ -3,6 +3,8 @@ package main
 import (
 	"math/rand"
 	"time"
+
+	"github.com/notnil/combos"
 )
 
 type Result struct {
@@ -66,22 +68,29 @@ func playPreFlop(hands []Card) Result {
 	}
 	all := append(hands, boad...)
 
-	for com := range combinations(all, 5, 10) {
-		if straightFlush(com) {
+	comb := combos.New(len(all), 5)
+	for _, com := range comb {
+		a := all[com[0]]
+		b := all[com[1]]
+		c := all[com[2]]
+		d := all[com[3]]
+		e := all[com[4]]
+		abcde := []Card{a, b, c, d, e}
+		if straightFlush(abcde) {
 			result.IsStraightFlush = true
-		} else if fourOfAKind(com) {
+		} else if fourOfAKind(abcde) {
 			result.IsFourOfAKind = true
-		} else if fullHouse(com) {
+		} else if fullHouse(abcde) {
 			result.IsFullHouse = true
-		} else if flush(com) {
+		} else if flush(abcde) {
 			result.IsFlush = true
-		} else if straight(com) {
+		} else if straight(abcde) {
 			result.IsStraight = true
-		} else if threeOfAKind(com) {
+		} else if threeOfAKind(abcde) {
 			result.IsThreeOfAKind = true
-		} else if twoPair(com) {
+		} else if twoPair(abcde) {
 			result.IsTwoPair = true
-		} else if onePair(com) {
+		} else if onePair(abcde) {
 			result.IsOnePair = true
 		}
 	}
