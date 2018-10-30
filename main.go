@@ -19,7 +19,7 @@ func main() {
 	hands := createCardsFromSuitsAndNumbers(suits, nums)
 	fmt.Println(hands)
 
-	tryTimes := 10000
+	tryTimes := 100000
 	if len(os.Args) >= 2 {
 		times, err := strconv.Atoi(os.Args[2])
 		if err != nil {
@@ -28,19 +28,20 @@ func main() {
 		}
 		tryTimes = times
 	}
+	times := splitTryTimes(tryTimes)
+	fmt.Println(times)
 
 	resultCount := NewResultCount()
 
 	bench := testing.Benchmark(func(b *testing.B) {
 
-		//results := []Result{}
 		wg := new(sync.WaitGroup)
-		results := make(chan Result, 3)
-		for t := 0; t < tryTimes; t++ {
+		results := make(chan []Result, 10)
+		for _, t := range times {
 			wg.Add(1)
 			go func(hands []Card) {
 				defer wg.Done()
-				playPreFlop(hands, results)
+				playPreFlopWithTimes(hands, t, results)
 			}(hands)
 		}
 		go func() {
@@ -48,7 +49,14 @@ func main() {
 			close(results)
 		}()
 
-		resultCount = calcResultCount(results)
+		rs := []Result{}
+		for result := range results {
+			for _, r := range result {
+				rs = append(rs, r)
+			}
+		}
+
+		resultCount = calcResultCount(rs)
 	})
 
 	fmt.Printf("OnePair        : %d ( %f %v )\n", resultCount.CountOnePair, float64(resultCount.CountOnePair)/float64(tryTimes)*100, "%")

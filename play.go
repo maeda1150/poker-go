@@ -55,7 +55,16 @@ func NewResultCount() ResultCount {
 	return resultCount
 }
 
-func playPreFlop(hands []Card, results chan<- Result) {
+func playPreFlopWithTimes(hands []Card, times int, results chan<- []Result) {
+	rs := []Result{}
+	for t := 0; t < times; t++ {
+		result := playPreFlop(hands)
+		rs = append(rs, result)
+	}
+	results <- rs
+}
+
+func playPreFlop(hands []Card) Result {
 	result := NewResult()
 
 	deck := createDeck()
@@ -94,12 +103,12 @@ func playPreFlop(hands []Card, results chan<- Result) {
 			result.IsOnePair = true
 		}
 	}
-	results <- result
+	return result
 }
 
-func calcResultCount(results chan Result) ResultCount {
+func calcResultCount(results []Result) ResultCount {
 	resultCount := NewResultCount()
-	for result := range results {
+	for _, result := range results {
 		if result.IsStraightFlush {
 			resultCount.CountStraightFlush++
 		} else if result.IsFourOfAKind {
