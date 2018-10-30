@@ -30,17 +30,18 @@ func main() {
 		}
 		tryTimes = times
 	}
+	times := splitTryTimes(tryTimes)
 
 	resultCount := NewResultCount()
 
 	wg := new(sync.WaitGroup)
-	results := make(chan []Result, 10)
-	for t := 0; t < 10; t++ {
+	results := make(chan []Result, len(times))
+	for i, time := range times {
 		wg.Add(1)
-		go func(hands []Card) {
+		go func(hands []Card, time int, i int) {
 			defer wg.Done()
-			playPreFlopWithTimes(hands, tryTimes/10, results)
-		}(hands)
+			playPreFlopWithTimes(hands, time, results, i)
+		}(hands, time, i)
 	}
 	go func() {
 		wg.Wait()

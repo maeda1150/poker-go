@@ -50,3 +50,17 @@ func containsString(s []string, e string) bool {
 	}
 	return false
 }
+
+func splitTryTimes(tryTimes int) []int {
+	times := []int{}
+	timesCount := tryTimes / 10000
+	for t := 0; t < timesCount; t++ {
+		times = append(times, 10000)
+	}
+
+	rest := tryTimes % 10000
+	if rest > 0 {
+		times = append(times, rest)
+	}
+	return times
+}

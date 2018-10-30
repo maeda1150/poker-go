@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -55,12 +56,16 @@ func NewResultCount() ResultCount {
 	return resultCount
 }
 
-func playPreFlopWithTimes(hands []Card, times int, results chan<- []Result) {
+func playPreFlopWithTimes(hands []Card, times int, results chan<- []Result, i int) {
+	fmt.Printf("start playPreFlopWithTimes --- time: %d, i: %d \n", times, i)
+	start := time.Now()
 	rs := []Result{}
 	for t := 0; t < times; t++ {
 		result := playPreFlop(hands)
 		rs = append(rs, result)
 	}
+	elapsed := time.Since(start)
+	fmt.Printf("finish playPreFlopWithTimes --- time: %d, i: %d, cost: %s \n", times, i, elapsed)
 	results <- rs
 }
 
