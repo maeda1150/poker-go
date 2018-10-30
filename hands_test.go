@@ -291,3 +291,22 @@ func TestStraightFlush(t *testing.T) {
 		t.Fatal("expected straight flush.")
 	}
 }
+
+func TestOnePairWithHands(t *testing.T) {
+	ex := []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"s", 4}, Card{"h", 4}}
+	hands := []Card{Card{"s", 1}, Card{"s", 10}}
+	if !onePairWithHands(ex, hands) {
+		t.Fatal("expected onePairWithHands.")
+	}
+
+	hands = []Card{Card{"d", 1}, Card{"s", 10}}
+	if onePairWithHands(ex, hands) {
+		t.Fatal("expected not onePairWithHands.")
+	}
+
+	ex = []Card{Card{"s", 1}, Card{"c", 2}, Card{"s", 2}, Card{"s", 4}, Card{"h", 4}}
+	hands = []Card{Card{"d", 1}, Card{"s", 2}}
+	if onePairWithHands(ex, hands) {
+		t.Fatal("expected not onePairWithHands.")
+	}
+}
