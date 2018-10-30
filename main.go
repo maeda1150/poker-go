@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"testing"
+	"time"
 )
 
 func main() {
+	start := time.Now()
+
 	suits, nums := splitSuitsAndNumbers(os.Args[1])
 
 	if (len(suits) != 2) || (len(nums) != 2) {
@@ -30,17 +32,14 @@ func main() {
 
 	resultCount := NewResultCount()
 
-	bench := testing.Benchmark(func(b *testing.B) {
+	results := []Result{}
+	for t := 0; t < tryTimes; t++ {
+		result := playPreFlop(hands)
+		results = append(results, result)
 
-		results := []Result{}
-		for t := 0; t < tryTimes; t++ {
-			result := playPreFlop(hands)
-			results = append(results, result)
+	}
 
-		}
-
-		resultCount = calcResultCount(results)
-	})
+	resultCount = calcResultCount(results)
 
 	fmt.Printf("OnePair        : %d ( %f %v )\n", resultCount.CountOnePair, float64(resultCount.CountOnePair)/float64(tryTimes)*100, "%")
 	fmt.Printf("TwoPair        : %d ( %f %v )\n", resultCount.CountTwoPair, float64(resultCount.CountTwoPair)/float64(tryTimes)*100, "%")
@@ -50,5 +49,7 @@ func main() {
 	fmt.Printf("FullHouse      : %d ( %f %v )\n", resultCount.CountFullHouse, float64(resultCount.CountFullHouse)/float64(tryTimes)*100, "%")
 	fmt.Printf("FourOfAKind    : %d ( %f %v )\n", resultCount.CountFourOfAKind, float64(resultCount.CountFourOfAKind)/float64(tryTimes)*100, "%")
 	fmt.Printf("StraightFlush  : %d ( %f %v )\n", resultCount.CountStraightFlush, float64(resultCount.CountStraightFlush)/float64(tryTimes)*100, "%")
-	fmt.Println(strconv.FormatFloat(bench.T.Seconds(), 'f', 20, 64) + " sec")
+
+	elapsed := time.Since(start)
+	fmt.Println(elapsed)
 }
