@@ -335,6 +335,39 @@ func TestFullHouse(t *testing.T) {
 	}
 }
 
+func TestFullHouseWithHands(t *testing.T) {
+	// boad と hands で flush になっていることが前提
+	boad := []Card{Card{"d", 12}, Card{"s", 9}, Card{"s", 12}, Card{"c", 9}, Card{"h", 8}}
+	hands := []Card{Card{"d", 5}, Card{"d", 9}}
+	if !fullHouseWithHands(boad, hands) {
+		t.Fatal("expected fullHouseWithHands.")
+	}
+
+	boad = []Card{Card{"d", 4}, Card{"s", 9}, Card{"s", 1}, Card{"c", 9}, Card{"h", 9}}
+	hands = []Card{Card{"d", 5}, Card{"s", 5}}
+	if !fullHouseWithHands(boad, hands) {
+		t.Fatal("expected fullHouseWithHands.")
+	}
+
+	boad = []Card{Card{"d", 4}, Card{"s", 9}, Card{"h", 5}, Card{"c", 9}, Card{"h", 1}}
+	hands = []Card{Card{"d", 5}, Card{"s", 5}}
+	if !fullHouseWithHands(boad, hands) {
+		t.Fatal("expected fullHouseWithHands.")
+	}
+
+	boad = []Card{Card{"d", 4}, Card{"s", 9}, Card{"h", 5}, Card{"d", 9}, Card{"h", 1}}
+	hands = []Card{Card{"d", 5}, Card{"c", 9}}
+	if !fullHouseWithHands(boad, hands) {
+		t.Fatal("expected fullHouseWithHands.")
+	}
+
+	boad = []Card{Card{"d", 5}, Card{"s", 9}, Card{"h", 5}, Card{"d", 9}, Card{"h", 9}}
+	hands = []Card{Card{"d", 13}, Card{"c", 1}}
+	if fullHouseWithHands(boad, hands) {
+		t.Fatal("expected not fullHouseWithHands.")
+	}
+}
+
 func TestFourOfAKind(t *testing.T) {
 	if fourOfAKind(exOnePair) {
 		t.Fatal("expected not four of a kind.")

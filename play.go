@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 	"time"
 
 	"github.com/notnil/combos"
@@ -22,6 +21,7 @@ type Result struct {
 	IsThreeOfAKindWithHands bool
 	IsStraightWithHands     bool
 	IsFlushWithHands        bool
+	IsFullHouseWithHands    bool
 }
 
 func NewResult() Result {
@@ -39,6 +39,7 @@ func NewResult() Result {
 	result.IsThreeOfAKindWithHands = false
 	result.IsStraightWithHands = false
 	result.IsFlushWithHands = false
+	result.IsFullHouseWithHands = false
 	return result
 }
 
@@ -56,6 +57,7 @@ type ResultCount struct {
 	CountThreeOfAKindWithHands int
 	CountStraightWithHands     int
 	CountFlushWithHands        int
+	CountFullHouseWithHands    int
 }
 
 func NewResultCount() ResultCount {
@@ -73,6 +75,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountThreeOfAKindWithHands = 0
 	resultCount.CountStraightWithHands = 0
 	resultCount.CountFlushWithHands = 0
+	resultCount.CountFullHouseWithHands = 0
 	return resultCount
 }
 
@@ -95,11 +98,7 @@ func playPreFlop(hands []Card) Result {
 	deck := createDeck()
 	deck = removeCardsFromDeck(deck, hands)
 	shuffleDeck(deck)
-	boad := []Card{}
-	for i := 0; i < 5; i++ {
-		rand.Seed(time.Now().UnixNano())
-		boad = append(boad, deck[rand.Intn(50)])
-	}
+	boad := []Card{deck[1], deck[3], deck[4], deck[5], deck[7], deck[9]}
 	all := append(hands, boad...)
 
 	// 1 つの result に複数の結果が入るようになっているが、
@@ -128,7 +127,9 @@ func playPreFlop(hands []Card) Result {
 		}
 	}
 
-	if result.IsFlush {
+	if result.IsFullHouse {
+		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
+	} else if result.IsFlush {
 		result.IsFlushWithHands = flushWithHands(boad, hands)
 	} else if result.IsStraight {
 		result.IsStraightWithHands = straightWithHands(boad, hands)
@@ -151,6 +152,9 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountFourOfAKind++
 		} else if result.IsFullHouse {
 			resultCount.CountFullHouse++
+			if result.IsFullHouseWithHands {
+				resultCount.CountFullHouseWithHands++
+			}
 		} else if result.IsFlush {
 			resultCount.CountFlush++
 			if result.IsFlushWithHands {
