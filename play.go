@@ -20,6 +20,7 @@ type Result struct {
 	IsOnePairWithHands      bool
 	IsTwoPairWithHands      bool
 	IsThreeOfAKindWithHands bool
+	IsStraightWithHands     bool
 }
 
 func NewResult() Result {
@@ -35,6 +36,7 @@ func NewResult() Result {
 	result.IsOnePairWithHands = false
 	result.IsTwoPairWithHands = false
 	result.IsThreeOfAKindWithHands = false
+	result.IsStraightWithHands = false
 	return result
 }
 
@@ -50,6 +52,7 @@ type ResultCount struct {
 	CountOnePairWithHands      int
 	CountTwoPairWithHands      int
 	CountThreeOfAKindWithHands int
+	CountStraightWithHands     int
 }
 
 func NewResultCount() ResultCount {
@@ -65,6 +68,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountOnePairWithHands = 0
 	resultCount.CountTwoPairWithHands = 0
 	resultCount.CountThreeOfAKindWithHands = 0
+	resultCount.CountStraightWithHands = 0
 	return resultCount
 }
 
@@ -94,6 +98,9 @@ func playPreFlop(hands []Card) Result {
 	}
 	all := append(hands, boad...)
 
+	// 1 つの result に複数の結果が入るようになっているが、
+	// calcResultCount で集計時は高い手役のみカウントするので
+	// 結果の正当性を保っている。
 	comb := combos.New(len(all), 5)
 	for _, com := range comb {
 		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
@@ -117,7 +124,9 @@ func playPreFlop(hands []Card) Result {
 		}
 	}
 
-	if result.IsThreeOfAKind {
+	if result.IsStraight {
+		result.IsStraightWithHands = straightWithHands(boad, hands)
+	} else if result.IsThreeOfAKind {
 		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
 	} else if result.IsTwoPair {
 		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
@@ -140,6 +149,9 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountFlush++
 		} else if result.IsStraight {
 			resultCount.CountStraight++
+			if result.IsStraightWithHands {
+				resultCount.CountStraightWithHands++
+			}
 		} else if result.IsThreeOfAKind {
 			resultCount.CountThreeOfAKind++
 			if result.IsThreeOfAKindWithHands {
