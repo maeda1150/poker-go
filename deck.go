@@ -34,12 +34,12 @@ func removeCardsFromDeck(deck []Card, cards []Card) []Card {
 
 func shuffleDeck(deck []Card) {
 	rand.Seed(time.Now().UnixNano())
-	times := 5 + rand.Intn(5)
-	for t := 0; t < times; t++ {
-		n := len(deck)
-		for i := n - 1; i >= 0; i-- {
-			j := rand.Intn(i + 1)
-			deck[i], deck[j] = deck[j], deck[i]
+	r := rand.Intn(10000000)
+	rand.Seed(time.Now().UnixNano() + int64(r))
+	for t := 3; t > 0; t-- {
+		for i := len(deck); i > 1; i-- {
+			j := rand.Intn(i)
+			deck[i-1], deck[j] = deck[j], deck[i-1]
 		}
 	}
 }
