@@ -200,6 +200,28 @@ func fullHouse(cards []Card) bool {
 	return false
 }
 
+// boad と hands で fullHouse になっていることが前提
+func fullHouseWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	comb := combos.New(len(all), 5)
+	fullHouses := [][]Card{}
+	for _, com := range comb {
+		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
+		abcde := []Card{a, b, c, d, e}
+		if fullHouse(abcde) {
+			fullHouses = append(fullHouses, abcde)
+		}
+	}
+	for _, f := range fullHouses {
+		for _, c := range f {
+			if c.Same(hands[0]) || c.Same(hands[1]) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func fourOfAKind(cards []Card) bool {
 	comb := combos.New(5, 4)
 	for _, com := range comb {
