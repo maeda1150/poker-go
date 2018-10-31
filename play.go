@@ -80,6 +80,9 @@ func playPreFlop(hands []Card) Result {
 	}
 	all := append(hands, boad...)
 
+	// 1 つの result に複数の結果が入るようになっているが、
+	// calcResultCount で集計時は高い手役のみカウントするので
+	// 結果の正当性を保っている。
 	comb := combos.New(len(all), 5)
 	for _, com := range comb {
 		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
