@@ -108,6 +108,28 @@ func straight(cards []Card) bool {
 	return straightImplementation(cards)
 }
 
+// boad と hands で straight になっていることが前提
+func straightWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	comb := combos.New(len(all), 5)
+	straights := [][]Card{}
+	for _, com := range comb {
+		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
+		abcde := []Card{a, b, c, d, e}
+		if straight(abcde) {
+			straights = append(straights, abcde)
+		}
+	}
+	for _, s := range straights {
+		for _, c := range s {
+			if c.Same(hands[0]) || c.Same(hands[1]) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func straightImplementation(cards []Card) bool {
 	sort.Slice(cards, func(i, j int) bool { return cards[i].Number < cards[j].Number })
 	royals := []int{1, 10, 11, 12, 13}
