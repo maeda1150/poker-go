@@ -54,6 +54,7 @@ type ResultCount struct {
 	CountThreeOfAKindWithHands int
 	CountStraightWithHands     int
 	CountFlushWithHands        int
+	CountFullHouseWithHands    int
 }
 
 func NewResultCount() ResultCount {
@@ -71,6 +72,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountThreeOfAKindWithHands = 0
 	resultCount.CountStraightWithHands = 0
 	resultCount.CountFlushWithHands = 0
+	resultCount.CountFullHouseWithHands = 0
 	return resultCount
 }
 
@@ -134,6 +136,9 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountFourOfAKind++
 		} else if result.IsFullHouse {
 			resultCount.CountFullHouse++
+			if result.IsFullHouseWithHands {
+				resultCount.CountFullHouseWithHands++
+			}
 		} else if result.IsFlush {
 			resultCount.CountFlush++
 			if result.IsFlushWithHands {
