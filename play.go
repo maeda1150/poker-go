@@ -87,26 +87,23 @@ func NewResultCount() ResultCount {
 	return resultCount
 }
 
-func playPreFlopWithTimes(hands []Card, times int, results chan<- []Result, i int) {
-	fmt.Printf("start playPreFlopWithTimes --- time: %d, i: %d \n", times, i)
+func playPreFlopWithTimes(hands []Card, deck []Card, coms [][]int, results chan<- []Result, i int) {
+	fmt.Printf("start playPreFlopWithTimes --- times: %d, i: %d \n", len(coms), i)
 	start := time.Now()
 	rs := []Result{}
-	for t := 0; t < times; t++ {
-		result := playPreFlop(hands)
+	for _, com := range coms {
+		result := playPreFlop(hands, deck, com)
 		rs = append(rs, result)
 	}
 	elapsed := time.Since(start)
-	fmt.Printf("finish playPreFlopWithTimes --- time: %d, i: %d, cost: %s \n", times, i, elapsed)
+	fmt.Printf("finish playPreFlopWithTimes --- time: %d, i: %d, cost: %s \n", len(coms), i, elapsed)
 	results <- rs
 }
 
-func playPreFlop(hands []Card) Result {
+func playPreFlop(hands []Card, deck []Card, com []int) Result {
 	result := NewResult()
-
-	deck := createDeck()
-	deck = removeCardsFromDeck(deck, hands)
-	shuffleDeck(deck)
-	boad := []Card{deck[1], deck[3], deck[4], deck[5], deck[7], deck[9]}
+	a, b, c, d, e := deck[com[0]], deck[com[1]], deck[com[2]], deck[com[3]], deck[com[4]]
+	boad := []Card{a, b, c, d, e}
 	all := append(hands, boad...)
 
 	findHand(all, &result)

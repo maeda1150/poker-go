@@ -64,3 +64,14 @@ func splitTryTimes(tryTimes int) []int {
 	}
 	return times
 }
+
+func splitCombs(combs [][]int) [][][]int {
+	combsList := [][][]int{}
+	times := len(combs) / 100000
+	for t := 0; t < times; t++ {
+		combsList = append(combsList, combs[t*100000:(t+1)*100000])
+	}
+	combsList = append(combsList, combs[times*100000:])
+
+	return combsList
+}

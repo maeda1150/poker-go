@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"sync"
 	"time"
+
+	"github.com/notnil/combos"
 )
 
 func main() {
@@ -21,27 +22,21 @@ func main() {
 	hands := createCardsFromSuitsAndNumbers(suits, nums)
 	fmt.Println(hands)
 
-	tryTimes := 100000
-	if len(os.Args) >= 2 {
-		times, err := strconv.Atoi(os.Args[2])
-		if err != nil {
-			fmt.Println("times is not signed int.")
-			os.Exit(1)
-		}
-		tryTimes = times
-	}
-	times := splitTryTimes(tryTimes)
-
+	deck := createDeck()
+	deck = removeCardsFromDeck(deck, hands)
+	combs := combos.New(len(deck), 5)
+	tryTimes := len(combs)
+	combsList := splitCombs(combs)
 	resultCount := NewResultCount()
 
 	wg := new(sync.WaitGroup)
-	results := make(chan []Result, len(times))
-	for i, time := range times {
+	results := make(chan []Result, len(combsList))
+	for i, coms := range combsList {
 		wg.Add(1)
-		go func(hands []Card, time int, i int) {
+		go func(hands []Card, deck []Card, coms [][]int, i int) {
 			defer wg.Done()
-			playPreFlopWithTimes(hands, time, results, i)
-		}(hands, time, i)
+			playPreFlopWithTimes(hands, deck, coms, results, i)
+		}(hands, deck, coms, i)
 	}
 	go func() {
 		wg.Wait()
