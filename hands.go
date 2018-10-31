@@ -46,6 +46,21 @@ func twoPair(cards []Card) bool {
 	return duplicatePair(set[0], set[1])
 }
 
+// boad と hands で twoPair になっていることが前提
+func twoPairWithHands(boad []Card, hands []Card) bool {
+	if hands[0].Number == hands[1].Number {
+		return true
+	}
+	for _, b := range boad {
+		for _, hand := range hands {
+			if b.Number == hand.Number {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func threeOfAKind(cards []Card) bool {
 	if fourOfAKind(cards) {
 		return false

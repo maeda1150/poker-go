@@ -17,6 +17,7 @@ type Result struct {
 	IsTwoPair          bool
 	IsOnePair          bool
 	IsOnePairWithHands bool
+	IsTwoPairWithHands bool
 }
 
 func NewResult() Result {
@@ -30,6 +31,7 @@ func NewResult() Result {
 	result.IsTwoPair = false
 	result.IsOnePair = false
 	result.IsOnePairWithHands = false
+	result.IsTwoPairWithHands = false
 	return result
 }
 
@@ -43,6 +45,7 @@ type ResultCount struct {
 	CountTwoPair          int
 	CountOnePair          int
 	CountOnePairWithHands int
+	CountTwoPairWithHands int
 }
 
 func NewResultCount() ResultCount {
@@ -56,6 +59,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountTwoPair = 0
 	resultCount.CountOnePair = 0
 	resultCount.CountOnePairWithHands = 0
+	resultCount.CountTwoPairWithHands = 0
 	return resultCount
 }
 
@@ -98,7 +102,9 @@ func playPreFlop(hands []Card) Result {
 			result.IsOnePair = true
 		}
 	}
-	if result.IsOnePair {
+	if result.IsTwoPair {
+		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
+	} else if result.IsOnePair {
 		result.IsOnePairWithHands = onePairWithHands(boad, hands)
 	}
 	return result
@@ -121,6 +127,9 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountThreeOfAKind++
 		} else if result.IsTwoPair {
 			resultCount.CountTwoPair++
+			if result.IsTwoPairWithHands {
+				resultCount.CountTwoPairWithHands++
+			}
 		} else if result.IsOnePair {
 			resultCount.CountOnePair++
 			if result.IsOnePairWithHands {

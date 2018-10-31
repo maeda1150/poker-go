@@ -42,7 +42,7 @@ func main() {
 	resultCount = calcResultCount(results)
 
 	fmt.Printf("OnePair        : %d ( %f %v ), with hands : %d ( %f %v )\n", resultCount.CountOnePair, float64(resultCount.CountOnePair)/float64(tryTimes)*100, "%", resultCount.CountOnePairWithHands, float64(resultCount.CountOnePairWithHands)/float64(tryTimes)*100, "%")
-	fmt.Printf("TwoPair        : %d ( %f %v )\n", resultCount.CountTwoPair, float64(resultCount.CountTwoPair)/float64(tryTimes)*100, "%")
+	fmt.Printf("TwoPair        : %d ( %f %v ), with hands : %d ( %f %v )\n", resultCount.CountTwoPair, float64(resultCount.CountTwoPair)/float64(tryTimes)*100, "%", resultCount.CountTwoPairWithHands, float64(resultCount.CountTwoPairWithHands)/float64(tryTimes)*100, "%")
 	fmt.Printf("ThreeOfAKind   : %d ( %f %v )\n", resultCount.CountThreeOfAKind, float64(resultCount.CountThreeOfAKind)/float64(tryTimes)*100, "%")
 	fmt.Printf("Straight       : %d ( %f %v )\n", resultCount.CountStraight, float64(resultCount.CountStraight)/float64(tryTimes)*100, "%")
 	fmt.Printf("Flush          : %d ( %f %v )\n", resultCount.CountFlush, float64(resultCount.CountFlush)/float64(tryTimes)*100, "%")
