@@ -50,6 +50,27 @@ func TestOnePair(t *testing.T) {
 	}
 }
 
+func TestOnePairWithHands(t *testing.T) {
+	// boad と hands で onePair になっていることが前提
+	boad := []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 5}, Card{"s", 4}, Card{"h", 7}}
+	hands := []Card{Card{"c", 10}, Card{"d", 5}}
+	if !onePairWithHands(boad, hands) {
+		t.Fatal("expected onePairWithHands.")
+	}
+
+	boad = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 5}, Card{"s", 4}, Card{"h", 7}}
+	hands = []Card{Card{"c", 10}, Card{"d", 10}}
+	if !onePairWithHands(boad, hands) {
+		t.Fatal("expected onePairWithHands.")
+	}
+
+	boad = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 5}, Card{"s", 4}, Card{"h", 2}}
+	hands = []Card{Card{"c", 13}, Card{"d", 12}}
+	if onePairWithHands(boad, hands) {
+		t.Fatal("expected onePairWithHands.")
+	}
+}
+
 func TestTwoPair(t *testing.T) {
 	if twoPair(exOnePair) {
 		t.Fatal("ecpected not two pair.")
@@ -289,24 +310,5 @@ func TestStraightFlush(t *testing.T) {
 
 	if !straightFlush(exStraightFlush) {
 		t.Fatal("expected straight flush.")
-	}
-}
-
-func TestOnePairWithHands(t *testing.T) {
-	ex := []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 3}, Card{"s", 4}, Card{"h", 4}}
-	hands := []Card{Card{"s", 1}, Card{"s", 10}}
-	if !onePairWithHands(ex, hands) {
-		t.Fatal("expected onePairWithHands.")
-	}
-
-	hands = []Card{Card{"d", 1}, Card{"s", 10}}
-	if onePairWithHands(ex, hands) {
-		t.Fatal("expected not onePairWithHands.")
-	}
-
-	ex = []Card{Card{"s", 1}, Card{"c", 2}, Card{"s", 2}, Card{"s", 4}, Card{"h", 4}}
-	hands = []Card{Card{"d", 1}, Card{"s", 2}}
-	if onePairWithHands(ex, hands) {
-		t.Fatal("expected not onePairWithHands.")
 	}
 }

@@ -8,14 +8,15 @@ import (
 )
 
 type Result struct {
-	IsStraightFlush bool
-	IsFourOfAKind   bool
-	IsFullHouse     bool
-	IsFlush         bool
-	IsStraight      bool
-	IsThreeOfAKind  bool
-	IsTwoPair       bool
-	IsOnePair       bool
+	IsStraightFlush    bool
+	IsFourOfAKind      bool
+	IsFullHouse        bool
+	IsFlush            bool
+	IsStraight         bool
+	IsThreeOfAKind     bool
+	IsTwoPair          bool
+	IsOnePair          bool
+	IsOnePairWithHands bool
 }
 
 func NewResult() Result {
@@ -28,18 +29,20 @@ func NewResult() Result {
 	result.IsThreeOfAKind = false
 	result.IsTwoPair = false
 	result.IsOnePair = false
+	result.IsOnePairWithHands = false
 	return result
 }
 
 type ResultCount struct {
-	CountStraightFlush int
-	CountFourOfAKind   int
-	CountFullHouse     int
-	CountFlush         int
-	CountStraight      int
-	CountThreeOfAKind  int
-	CountTwoPair       int
-	CountOnePair       int
+	CountStraightFlush    int
+	CountFourOfAKind      int
+	CountFullHouse        int
+	CountFlush            int
+	CountStraight         int
+	CountThreeOfAKind     int
+	CountTwoPair          int
+	CountOnePair          int
+	CountOnePairWithHands int
 }
 
 func NewResultCount() ResultCount {
@@ -52,6 +55,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountThreeOfAKind = 0
 	resultCount.CountTwoPair = 0
 	resultCount.CountOnePair = 0
+	resultCount.CountOnePairWithHands = 0
 	return resultCount
 }
 
@@ -94,6 +98,9 @@ func playPreFlop(hands []Card) Result {
 			result.IsOnePair = true
 		}
 	}
+	if result.IsOnePair {
+		result.IsOnePairWithHands = onePairWithHands(boad, hands)
+	}
 	return result
 }
 
@@ -116,6 +123,9 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountTwoPair++
 		} else if result.IsOnePair {
 			resultCount.CountOnePair++
+			if result.IsOnePairWithHands {
+				resultCount.CountOnePairWithHands++
+			}
 		}
 	}
 	return resultCount
