@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -11,6 +10,7 @@ func main() {
 	start := time.Now()
 
 	suits, nums := splitSuitsAndNumbers(os.Args[1])
+	tryTimes := 2118760
 
 	if (len(suits) != 2) || (len(nums) != 2) {
 		fmt.Println("invalid card length")
@@ -20,26 +20,8 @@ func main() {
 	hands := createCardsFromSuitsAndNumbers(suits, nums)
 	fmt.Println(hands)
 
-	tryTimes := 10000
-	if len(os.Args) >= 2 {
-		times, err := strconv.Atoi(os.Args[2])
-		if err != nil {
-			fmt.Println("times is not signed int.")
-			os.Exit(1)
-		}
-		tryTimes = times
-	}
-
-	resultCount := NewResultCount()
-
-	results := []Result{}
-	for t := 0; t < tryTimes; t++ {
-		result := playPreFlop(hands)
-		results = append(results, result)
-
-	}
-
-	resultCount = calcResultCount(results)
+	results := playPreFlop(hands)
+	resultCount := calcResultCount(results)
 
 	fmt.Printf("OnePair        : %d ( %f %v ), with hands : %d ( %f %v )\n", resultCount.CountOnePair, float64(resultCount.CountOnePair)/float64(tryTimes)*100, "%", resultCount.CountOnePairWithHands, float64(resultCount.CountOnePairWithHands)/float64(tryTimes)*100, "%")
 	fmt.Printf("TwoPair        : %d ( %f %v ), with hands : %d ( %f %v )\n", resultCount.CountTwoPair, float64(resultCount.CountTwoPair)/float64(tryTimes)*100, "%", resultCount.CountTwoPairWithHands, float64(resultCount.CountTwoPairWithHands)/float64(tryTimes)*100, "%")

@@ -84,35 +84,40 @@ func NewResultCount() ResultCount {
 	return resultCount
 }
 
-func playPreFlop(hands []Card) Result {
-	result := NewResult()
+func playPreFlop(hands []Card) []Result {
+	results := []Result{}
 
 	deck := createDeck()
 	deck = removeCardsFromDeck(deck, hands)
-	shuffleDeck(deck)
-	boad := []Card{deck[1], deck[3], deck[4], deck[5], deck[7], deck[9]}
-	all := append(hands, boad...)
+	comb := combos.New(len(deck), 5)
+	for _, com := range comb {
+		result := NewResult()
+		a, b, c, d, e := deck[com[0]], deck[com[1]], deck[com[2]], deck[com[3]], deck[com[4]]
+		boad := []Card{a, b, c, d, e}
+		all := append(hands, boad...)
+		findHand(all, &result)
 
-	findHand(all, &result)
-
-	if result.IsStraightFlush {
-		result.IsStraightFlushWithHands = straightFlushWithHands(boad, hands)
-	} else if result.IsFourOfAKind {
-		result.IsFourOfAKindWithHands = fourOfAKindWithHands(boad, hands)
-	} else if result.IsFullHouse {
-		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
-	} else if result.IsFlush {
-		result.IsFlushWithHands = flushWithHands(boad, hands)
-	} else if result.IsStraight {
-		result.IsStraightWithHands = straightWithHands(boad, hands)
-	} else if result.IsThreeOfAKind {
-		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
-	} else if result.IsTwoPair {
-		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
-	} else if result.IsOnePair {
-		result.IsOnePairWithHands = onePairWithHands(boad, hands)
+		if result.IsStraightFlush {
+			result.IsStraightFlushWithHands = straightFlushWithHands(boad, hands)
+		} else if result.IsFourOfAKind {
+			result.IsFourOfAKindWithHands = fourOfAKindWithHands(boad, hands)
+		} else if result.IsFullHouse {
+			result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
+		} else if result.IsFlush {
+			result.IsFlushWithHands = flushWithHands(boad, hands)
+		} else if result.IsStraight {
+			result.IsStraightWithHands = straightWithHands(boad, hands)
+		} else if result.IsThreeOfAKind {
+			result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
+		} else if result.IsTwoPair {
+			result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
+		} else if result.IsOnePair {
+			result.IsOnePairWithHands = onePairWithHands(boad, hands)
+		}
+		results = append(results, result)
 	}
-	return result
+
+	return results
 }
 
 func findHand(all []Card, result *Result) {
