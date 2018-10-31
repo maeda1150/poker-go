@@ -236,6 +236,27 @@ func fourOfAKind(cards []Card) bool {
 	return false
 }
 
+// boad と hands で fourOfAKind になっていることが前提
+func fourOfAKindWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	numCount := map[int]int{}
+	for _, a := range all {
+		numCount[a.Number] = numCount[a.Number] + 1
+	}
+	fourNum := 0
+	for k, v := range numCount {
+		if v == 4 {
+			fourNum = k
+		}
+	}
+	for _, hand := range hands {
+		if hand.Number == fourNum {
+			return true
+		}
+	}
+	return false
+}
+
 func straightFlush(cards []Card) bool {
 	return straightImplementation(cards) && flushImplementation(cards)
 }

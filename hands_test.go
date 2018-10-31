@@ -402,6 +402,27 @@ func TestFourOfAKind(t *testing.T) {
 	}
 }
 
+func TestFourOfAKindWithHands(t *testing.T) {
+	// boad と hands で fourOfAKind になっていることが前提
+	boad := []Card{Card{"d", 9}, Card{"s", 9}, Card{"s", 12}, Card{"c", 9}, Card{"h", 8}}
+	hands := []Card{Card{"d", 5}, Card{"h", 9}}
+	if !fourOfAKindWithHands(boad, hands) {
+		t.Fatal("expected fourOfAKindWithHands.")
+	}
+
+	boad = []Card{Card{"d", 12}, Card{"s", 9}, Card{"s", 12}, Card{"c", 9}, Card{"h", 8}}
+	hands = []Card{Card{"d", 9}, Card{"h", 9}}
+	if !fourOfAKindWithHands(boad, hands) {
+		t.Fatal("expected fourOfAKindWithHands.")
+	}
+
+	boad = []Card{Card{"d", 9}, Card{"s", 9}, Card{"s", 12}, Card{"c", 9}, Card{"h", 9}}
+	hands = []Card{Card{"d", 3}, Card{"h", 2}}
+	if fourOfAKindWithHands(boad, hands) {
+		t.Fatal("expected not fourOfAKindWithHands.")
+	}
+}
+
 func TestStraightFlush(t *testing.T) {
 	if straightFlush(exOnePair) {
 		t.Fatal("expected not straight flush.")

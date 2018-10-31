@@ -19,6 +19,7 @@ type Result struct {
 	IsStraightWithHands     bool
 	IsFlushWithHands        bool
 	IsFullHouseWithHands    bool
+	IsFourOfAKindWithHands  bool
 }
 
 func NewResult() Result {
@@ -37,6 +38,7 @@ func NewResult() Result {
 	result.IsStraightWithHands = false
 	result.IsFlushWithHands = false
 	result.IsFullHouseWithHands = false
+	result.IsFourOfAKindWithHands = false
 	return result
 }
 
@@ -55,6 +57,7 @@ type ResultCount struct {
 	CountStraightWithHands     int
 	CountFlushWithHands        int
 	CountFullHouseWithHands    int
+	CountFourOfAKindWithHands  int
 }
 
 func NewResultCount() ResultCount {
@@ -73,6 +76,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountStraightWithHands = 0
 	resultCount.CountFlushWithHands = 0
 	resultCount.CountFullHouseWithHands = 0
+	resultCount.CountFourOfAKindWithHands = 0
 	return resultCount
 }
 
@@ -87,7 +91,9 @@ func playPreFlop(hands []Card) Result {
 
 	findHand(all, &result)
 
-	if result.IsFullHouse {
+	if result.IsFourOfAKind {
+		result.IsFourOfAKindWithHands = fourOfAKindWithHands(boad, hands)
+	} else if result.IsFullHouse {
 		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
 	} else if result.IsFlush {
 		result.IsFlushWithHands = flushWithHands(boad, hands)
@@ -138,6 +144,9 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountStraightFlush++
 		} else if result.IsFourOfAKind {
 			resultCount.CountFourOfAKind++
+			if result.IsFourOfAKindWithHands {
+				resultCount.CountFourOfAKindWithHands++
+			}
 		} else if result.IsFullHouse {
 			resultCount.CountFullHouse++
 			if result.IsFullHouseWithHands {
