@@ -280,6 +280,27 @@ func TestFlush(t *testing.T) {
 	}
 }
 
+func TestFlushWithHands(t *testing.T) {
+	// boad と hands で flush になっていることが前提
+	boad := []Card{Card{"s", 6}, Card{"s", 9}, Card{"s", 13}, Card{"s", 11}, Card{"h", 8}}
+	hands := []Card{Card{"d", 5}, Card{"s", 1}}
+	if !flushWithHands(boad, hands) {
+		t.Fatal("expected flushWithHands.")
+	}
+
+	boad = []Card{Card{"s", 6}, Card{"d", 9}, Card{"s", 13}, Card{"s", 11}, Card{"h", 8}}
+	hands = []Card{Card{"s", 5}, Card{"s", 1}}
+	if !flushWithHands(boad, hands) {
+		t.Fatal("expected flushWithHands.")
+	}
+
+	boad = []Card{Card{"s", 6}, Card{"s", 9}, Card{"s", 13}, Card{"s", 11}, Card{"s", 8}}
+	hands = []Card{Card{"d", 12}, Card{"h", 1}}
+	if flushWithHands(boad, hands) {
+		t.Fatal("expected not flushWithHands.")
+	}
+}
+
 func TestFullHouse(t *testing.T) {
 	if fullHouse(exOnePair) {
 		t.Fatal("expected not full house.")
