@@ -1,9 +1,6 @@
 package main
 
 import (
-	"math/rand"
-	"time"
-
 	"github.com/notnil/combos"
 )
 
@@ -21,6 +18,7 @@ type Result struct {
 	IsThreeOfAKindWithHands bool
 	IsStraightWithHands     bool
 	IsFlushWithHands        bool
+	IsFullHouseWithHands    bool
 }
 
 func NewResult() Result {
@@ -38,6 +36,7 @@ func NewResult() Result {
 	result.IsThreeOfAKindWithHands = false
 	result.IsStraightWithHands = false
 	result.IsFlushWithHands = false
+	result.IsFullHouseWithHands = false
 	return result
 }
 
@@ -81,11 +80,7 @@ func playPreFlop(hands []Card) Result {
 	deck := createDeck()
 	deck = removeCardsFromDeck(deck, hands)
 	shuffleDeck(deck)
-	boad := []Card{}
-	for i := 0; i < 5; i++ {
-		rand.Seed(time.Now().UnixNano())
-		boad = append(boad, deck[rand.Intn(50)])
-	}
+	boad := []Card{deck[1], deck[3], deck[4], deck[5], deck[7], deck[9]}
 	all := append(hands, boad...)
 
 	// 1 つの result に複数の結果が入るようになっているが、
@@ -114,7 +109,9 @@ func playPreFlop(hands []Card) Result {
 		}
 	}
 
-	if result.IsFlush {
+	if result.IsFullHouse {
+		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
+	} else if result.IsFlush {
 		result.IsFlushWithHands = flushWithHands(boad, hands)
 	} else if result.IsStraight {
 		result.IsStraightWithHands = straightWithHands(boad, hands)
