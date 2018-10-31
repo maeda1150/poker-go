@@ -80,6 +80,27 @@ func threeOfAKind(cards []Card) bool {
 	return false
 }
 
+// boad と hands で threeOfAKind になっていることが前提
+func threeOfAKindWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	numCount := map[int]int{}
+	for _, a := range all {
+		numCount[a.Number] = numCount[a.Number] + 1
+	}
+	threeNum := 0
+	for k, v := range numCount {
+		if v == 3 {
+			threeNum = k
+		}
+	}
+	for _, hand := range hands {
+		if hand.Number == threeNum {
+			return true
+		}
+	}
+	return false
+}
+
 func straight(cards []Card) bool {
 	if straightFlush(cards) {
 		return false

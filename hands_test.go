@@ -166,6 +166,27 @@ func TestThreeOfAKind(t *testing.T) {
 	}
 }
 
+func TestThreeOfAKindWithHands(t *testing.T) {
+	// boad と hands で twoPair になっていることが前提
+	boad := []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 5}, Card{"s", 4}, Card{"h", 7}}
+	hands := []Card{Card{"c", 5}, Card{"d", 5}}
+	if !threeOfAKindWithHands(boad, hands) {
+		t.Fatal("expected threeOfAKindWithHands.")
+	}
+
+	boad = []Card{Card{"s", 1}, Card{"s", 2}, Card{"s", 5}, Card{"s", 7}, Card{"h", 2}}
+	hands = []Card{Card{"c", 10}, Card{"d", 2}}
+	if !threeOfAKindWithHands(boad, hands) {
+		t.Fatal("expected threeOfAKindWithHands.")
+	}
+
+	boad = []Card{Card{"s", 1}, Card{"s", 5}, Card{"d", 5}, Card{"s", 4}, Card{"h", 5}}
+	hands = []Card{Card{"c", 12}, Card{"d", 12}}
+	if threeOfAKindWithHands(boad, hands) {
+		t.Fatal("expected not threeOfAKindWithHands.")
+	}
+}
+
 func TestStraight(t *testing.T) {
 	if straight(exOnePair) {
 		t.Fatal("expected not straight.")
