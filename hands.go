@@ -158,6 +158,28 @@ func flush(cards []Card) bool {
 	return flushImplementation(cards)
 }
 
+// boad と hands で flush になっていることが前提
+func flushWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	comb := combos.New(len(all), 5)
+	flushes := [][]Card{}
+	for _, com := range comb {
+		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
+		abcde := []Card{a, b, c, d, e}
+		if flush(abcde) {
+			flushes = append(flushes, abcde)
+		}
+	}
+	for _, f := range flushes {
+		for _, c := range f {
+			if c.Same(hands[0]) || c.Same(hands[1]) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func flushImplementation(cards []Card) bool {
 	return cards[0].Suit == cards[1].Suit && cards[0].Suit == cards[2].Suit && cards[0].Suit == cards[3].Suit && cards[0].Suit == cards[4].Suit
 }
