@@ -8,21 +8,22 @@ import (
 )
 
 type Result struct {
-	IsStraightFlush         bool
-	IsFourOfAKind           bool
-	IsFullHouse             bool
-	IsFlush                 bool
-	IsStraight              bool
-	IsThreeOfAKind          bool
-	IsTwoPair               bool
-	IsOnePair               bool
-	IsOnePairWithHands      bool
-	IsTwoPairWithHands      bool
-	IsThreeOfAKindWithHands bool
-	IsStraightWithHands     bool
-	IsFlushWithHands        bool
-	IsFullHouseWithHands    bool
-	IsFourOfAKindWithHands  bool
+	IsStraightFlush          bool
+	IsFourOfAKind            bool
+	IsFullHouse              bool
+	IsFlush                  bool
+	IsStraight               bool
+	IsThreeOfAKind           bool
+	IsTwoPair                bool
+	IsOnePair                bool
+	IsOnePairWithHands       bool
+	IsTwoPairWithHands       bool
+	IsThreeOfAKindWithHands  bool
+	IsStraightWithHands      bool
+	IsFlushWithHands         bool
+	IsFullHouseWithHands     bool
+	IsFourOfAKindWithHands   bool
+	IsStraightFlushWithHands bool
 }
 
 func NewResult() Result {
@@ -42,25 +43,27 @@ func NewResult() Result {
 	result.IsFlushWithHands = false
 	result.IsFullHouseWithHands = false
 	result.IsFourOfAKindWithHands = false
+	result.IsStraightFlushWithHands = false
 	return result
 }
 
 type ResultCount struct {
-	CountStraightFlush         int
-	CountFourOfAKind           int
-	CountFullHouse             int
-	CountFlush                 int
-	CountStraight              int
-	CountThreeOfAKind          int
-	CountTwoPair               int
-	CountOnePair               int
-	CountOnePairWithHands      int
-	CountTwoPairWithHands      int
-	CountThreeOfAKindWithHands int
-	CountStraightWithHands     int
-	CountFlushWithHands        int
-	CountFullHouseWithHands    int
-	CountFourOfAKindWithHands  int
+	CountStraightFlush          int
+	CountFourOfAKind            int
+	CountFullHouse              int
+	CountFlush                  int
+	CountStraight               int
+	CountThreeOfAKind           int
+	CountTwoPair                int
+	CountOnePair                int
+	CountOnePairWithHands       int
+	CountTwoPairWithHands       int
+	CountThreeOfAKindWithHands  int
+	CountStraightWithHands      int
+	CountFlushWithHands         int
+	CountFullHouseWithHands     int
+	CountFourOfAKindWithHands   int
+	CountStraightFlushWithHands int
 }
 
 func NewResultCount() ResultCount {
@@ -80,6 +83,7 @@ func NewResultCount() ResultCount {
 	resultCount.CountFlushWithHands = 0
 	resultCount.CountFullHouseWithHands = 0
 	resultCount.CountFourOfAKindWithHands = 0
+	resultCount.CountStraightFlushWithHands = 0
 	return resultCount
 }
 
@@ -107,7 +111,9 @@ func playPreFlop(hands []Card) Result {
 
 	findHand(all, &result)
 
-	if result.IsFourOfAKind {
+	if result.IsStraightFlush {
+		result.IsStraightFlushWithHands = straightFlushWithHands(boad, hands)
+	} else if result.IsFourOfAKind {
 		result.IsFourOfAKindWithHands = fourOfAKindWithHands(boad, hands)
 	} else if result.IsFullHouse {
 		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
@@ -158,6 +164,9 @@ func calcResultCount(results []Result) ResultCount {
 	for _, result := range results {
 		if result.IsStraightFlush {
 			resultCount.CountStraightFlush++
+			if result.IsStraightFlushWithHands {
+				resultCount.CountStraightFlushWithHands++
+			}
 		} else if result.IsFourOfAKind {
 			resultCount.CountFourOfAKind++
 			if result.IsFourOfAKindWithHands {

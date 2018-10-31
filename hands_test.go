@@ -456,3 +456,24 @@ func TestStraightFlush(t *testing.T) {
 		t.Fatal("expected straight flush.")
 	}
 }
+
+func TestStraightFlushWithHands(t *testing.T) {
+	// boad と hands で straightFlush になっていることが前提
+	boad := []Card{Card{"h", 10}, Card{"h", 7}, Card{"s", 1}, Card{"h", 8}, Card{"h", 11}}
+	hands := []Card{Card{"d", 5}, Card{"h", 9}}
+	if !straightFlushWithHands(boad, hands) {
+		t.Fatal("expected straightFlushWithHands.")
+	}
+
+	boad = []Card{Card{"h", 10}, Card{"h", 7}, Card{"s", 1}, Card{"h", 8}, Card{"h", 5}}
+	hands = []Card{Card{"h", 11}, Card{"h", 9}}
+	if !straightFlushWithHands(boad, hands) {
+		t.Fatal("expected straightFlushWithHands.")
+	}
+
+	boad = []Card{Card{"h", 10}, Card{"h", 7}, Card{"h", 11}, Card{"h", 8}, Card{"h", 9}}
+	hands = []Card{Card{"s", 3}, Card{"c", 5}}
+	if straightFlushWithHands(boad, hands) {
+		t.Fatal("expected not straightFlushWithHands.")
+	}
+}
