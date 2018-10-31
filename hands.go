@@ -261,6 +261,28 @@ func straightFlush(cards []Card) bool {
 	return straightImplementation(cards) && flushImplementation(cards)
 }
 
+// boad と hands で straightFlush になっていることが前提
+func straightFlushWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	comb := combos.New(len(all), 5)
+	straightFlushes := [][]Card{}
+	for _, com := range comb {
+		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
+		abcde := []Card{a, b, c, d, e}
+		if straightFlush(abcde) {
+			straightFlushes = append(straightFlushes, abcde)
+		}
+	}
+	for _, s := range straightFlushes {
+		for _, c := range s {
+			if c.Same(hands[0]) || c.Same(hands[1]) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func duplicatePair(a []Card, b []Card) bool {
 	if a[0].Same(b[0]) {
 		return false
