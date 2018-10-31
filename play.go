@@ -101,6 +101,25 @@ func playPreFlop(hands []Card) Result {
 	boad := []Card{deck[1], deck[3], deck[4], deck[5], deck[7], deck[9]}
 	all := append(hands, boad...)
 
+	findHand(all, &result)
+
+	if result.IsFullHouse {
+		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
+	} else if result.IsFlush {
+		result.IsFlushWithHands = flushWithHands(boad, hands)
+	} else if result.IsStraight {
+		result.IsStraightWithHands = straightWithHands(boad, hands)
+	} else if result.IsThreeOfAKind {
+		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
+	} else if result.IsTwoPair {
+		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
+	} else if result.IsOnePair {
+		result.IsOnePairWithHands = onePairWithHands(boad, hands)
+	}
+	return result
+}
+
+func findHand(all []Card, result *Result) {
 	// 1 つの result に複数の結果が入るようになっているが、
 	// calcResultCount で集計時は高い手役のみカウントするので
 	// 結果の正当性を保っている。
@@ -126,21 +145,6 @@ func playPreFlop(hands []Card) Result {
 			result.IsOnePair = true
 		}
 	}
-
-	if result.IsFullHouse {
-		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
-	} else if result.IsFlush {
-		result.IsFlushWithHands = flushWithHands(boad, hands)
-	} else if result.IsStraight {
-		result.IsStraightWithHands = straightWithHands(boad, hands)
-	} else if result.IsThreeOfAKind {
-		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
-	} else if result.IsTwoPair {
-		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
-	} else if result.IsOnePair {
-		result.IsOnePairWithHands = onePairWithHands(boad, hands)
-	}
-	return result
 }
 
 func calcResultCount(results []Result) ResultCount {
