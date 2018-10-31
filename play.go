@@ -9,14 +9,17 @@ import (
 )
 
 type Result struct {
-	IsStraightFlush bool
-	IsFourOfAKind   bool
-	IsFullHouse     bool
-	IsFlush         bool
-	IsStraight      bool
-	IsThreeOfAKind  bool
-	IsTwoPair       bool
-	IsOnePair       bool
+	IsStraightFlush         bool
+	IsFourOfAKind           bool
+	IsFullHouse             bool
+	IsFlush                 bool
+	IsStraight              bool
+	IsThreeOfAKind          bool
+	IsTwoPair               bool
+	IsOnePair               bool
+	IsOnePairWithHands      bool
+	IsTwoPairWithHands      bool
+	IsThreeOfAKindWithHands bool
 }
 
 func NewResult() Result {
@@ -29,18 +32,24 @@ func NewResult() Result {
 	result.IsThreeOfAKind = false
 	result.IsTwoPair = false
 	result.IsOnePair = false
+	result.IsOnePairWithHands = false
+	result.IsTwoPairWithHands = false
+	result.IsThreeOfAKindWithHands = false
 	return result
 }
 
 type ResultCount struct {
-	CountStraightFlush int
-	CountFourOfAKind   int
-	CountFullHouse     int
-	CountFlush         int
-	CountStraight      int
-	CountThreeOfAKind  int
-	CountTwoPair       int
-	CountOnePair       int
+	CountStraightFlush         int
+	CountFourOfAKind           int
+	CountFullHouse             int
+	CountFlush                 int
+	CountStraight              int
+	CountThreeOfAKind          int
+	CountTwoPair               int
+	CountOnePair               int
+	CountOnePairWithHands      int
+	CountTwoPairWithHands      int
+	CountThreeOfAKindWithHands int
 }
 
 func NewResultCount() ResultCount {
@@ -53,6 +62,9 @@ func NewResultCount() ResultCount {
 	resultCount.CountThreeOfAKind = 0
 	resultCount.CountTwoPair = 0
 	resultCount.CountOnePair = 0
+	resultCount.CountOnePairWithHands = 0
+	resultCount.CountTwoPairWithHands = 0
+	resultCount.CountThreeOfAKindWithHands = 0
 	return resultCount
 }
 
@@ -84,11 +96,7 @@ func playPreFlop(hands []Card) Result {
 
 	comb := combos.New(len(all), 5)
 	for _, com := range comb {
-		a := all[com[0]]
-		b := all[com[1]]
-		c := all[com[2]]
-		d := all[com[3]]
-		e := all[com[4]]
+		a, b, c, d, e := all[com[0]], all[com[1]], all[com[2]], all[com[3]], all[com[4]]
 		abcde := []Card{a, b, c, d, e}
 		if straightFlush(abcde) {
 			result.IsStraightFlush = true
@@ -108,6 +116,14 @@ func playPreFlop(hands []Card) Result {
 			result.IsOnePair = true
 		}
 	}
+
+	if result.IsThreeOfAKind {
+		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
+	} else if result.IsTwoPair {
+		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
+	} else if result.IsOnePair {
+		result.IsOnePairWithHands = onePairWithHands(boad, hands)
+	}
 	return result
 }
 
@@ -126,10 +142,19 @@ func calcResultCount(results []Result) ResultCount {
 			resultCount.CountStraight++
 		} else if result.IsThreeOfAKind {
 			resultCount.CountThreeOfAKind++
+			if result.IsThreeOfAKindWithHands {
+				resultCount.CountThreeOfAKindWithHands++
+			}
 		} else if result.IsTwoPair {
 			resultCount.CountTwoPair++
+			if result.IsTwoPairWithHands {
+				resultCount.CountTwoPairWithHands++
+			}
 		} else if result.IsOnePair {
 			resultCount.CountOnePair++
+			if result.IsOnePairWithHands {
+				resultCount.CountOnePairWithHands++
+			}
 		}
 	}
 	return resultCount

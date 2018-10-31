@@ -17,6 +17,21 @@ func onePair(cards []Card) bool {
 	return count == 1
 }
 
+// boad と hands で onePair になっていることが前提
+func onePairWithHands(boad []Card, hands []Card) bool {
+	if hands[0].Number == hands[1].Number {
+		return true
+	}
+	for _, b := range boad {
+		for _, hand := range hands {
+			if b.Number == hand.Number {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func twoPair(cards []Card) bool {
 	comb := combos.New(5, 2)
 	set := [][]Card{}
@@ -29,6 +44,21 @@ func twoPair(cards []Card) bool {
 		return false
 	}
 	return duplicatePair(set[0], set[1])
+}
+
+// boad と hands で twoPair になっていることが前提
+func twoPairWithHands(boad []Card, hands []Card) bool {
+	if hands[0].Number == hands[1].Number {
+		return true
+	}
+	for _, b := range boad {
+		for _, hand := range hands {
+			if b.Number == hand.Number {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func threeOfAKind(cards []Card) bool {
@@ -45,6 +75,27 @@ func threeOfAKind(cards []Card) bool {
 			if rest[0].Number != rest[1].Number {
 				return true
 			}
+		}
+	}
+	return false
+}
+
+// boad と hands で threeOfAKind になっていることが前提
+func threeOfAKindWithHands(boad []Card, hands []Card) bool {
+	all := append(hands, boad...)
+	numCount := map[int]int{}
+	for _, a := range all {
+		numCount[a.Number] = numCount[a.Number] + 1
+	}
+	threeNum := 0
+	for k, v := range numCount {
+		if v == 3 {
+			threeNum = k
+		}
+	}
+	for _, hand := range hands {
+		if hand.Number == threeNum {
+			return true
 		}
 	}
 	return false
@@ -121,18 +172,6 @@ func fourOfAKind(cards []Card) bool {
 
 func straightFlush(cards []Card) bool {
 	return straightImplementation(cards) && flushImplementation(cards)
-}
-
-func onePairWithHands(cards []Card, hands []Card) bool {
-	if !onePair(cards) {
-		return false
-	}
-	for _, card := range cards {
-		if card.Same(hands[0]) || card.Same(hands[1]) {
-			return true
-		}
-	}
-	return false
 }
 
 func duplicatePair(a []Card, b []Card) bool {
