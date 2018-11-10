@@ -107,24 +107,8 @@ func playPreFlop(hands []Card, deck []Card, com []int) Result {
 	all := append(hands, boad...)
 
 	findHand(all, &result)
+	aggregateWithHands(boad, hands, &result)
 
-	if result.IsStraightFlush {
-		result.IsStraightFlushWithHands = straightFlushWithHands(boad, hands)
-	} else if result.IsFourOfAKind {
-		result.IsFourOfAKindWithHands = fourOfAKindWithHands(boad, hands)
-	} else if result.IsFullHouse {
-		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
-	} else if result.IsFlush {
-		result.IsFlushWithHands = flushWithHands(boad, hands)
-	} else if result.IsStraight {
-		result.IsStraightWithHands = straightWithHands(boad, hands)
-	} else if result.IsThreeOfAKind {
-		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
-	} else if result.IsTwoPair {
-		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
-	} else if result.IsOnePair {
-		result.IsOnePairWithHands = onePairWithHands(boad, hands)
-	}
 	return result
 }
 
@@ -153,6 +137,26 @@ func findHand(all []Card, result *Result) {
 		} else if onePair(abcde) {
 			result.IsOnePair = true
 		}
+	}
+}
+
+func aggregateWithHands(boad []Card, hands []Card, result *Result) {
+	if result.IsStraightFlush {
+		result.IsStraightFlushWithHands = straightFlushWithHands(boad, hands)
+	} else if result.IsFourOfAKind {
+		result.IsFourOfAKindWithHands = fourOfAKindWithHands(boad, hands)
+	} else if result.IsFullHouse {
+		result.IsFullHouseWithHands = fullHouseWithHands(boad, hands)
+	} else if result.IsFlush {
+		result.IsFlushWithHands = flushWithHands(boad, hands)
+	} else if result.IsStraight {
+		result.IsStraightWithHands = straightWithHands(boad, hands)
+	} else if result.IsThreeOfAKind {
+		result.IsThreeOfAKindWithHands = threeOfAKindWithHands(boad, hands)
+	} else if result.IsTwoPair {
+		result.IsTwoPairWithHands = twoPairWithHands(boad, hands)
+	} else if result.IsOnePair {
+		result.IsOnePairWithHands = onePairWithHands(boad, hands)
 	}
 }
 
