@@ -50,3 +50,30 @@ func containsString(s []string, e string) bool {
 	}
 	return false
 }
+
+func splitTryTimes(tryTimes int) []int {
+	times := []int{}
+	timesCount := tryTimes / 10000
+	for t := 0; t < timesCount; t++ {
+		times = append(times, 10000)
+	}
+
+	rest := tryTimes % 10000
+	if rest > 0 {
+		times = append(times, rest)
+	}
+	return times
+}
+
+func splitCombs(combs [][]int) [][][]int {
+	amount := 100000
+
+	combsList := [][][]int{}
+	times := len(combs) / amount
+	for t := 0; t < times; t++ {
+		combsList = append(combsList, combs[t*amount:(t+1)*amount])
+	}
+	combsList = append(combsList, combs[times*amount:])
+
+	return combsList
+}
