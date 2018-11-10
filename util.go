@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"strconv"
 )
 
@@ -66,7 +67,9 @@ func splitTryTimes(tryTimes int) []int {
 }
 
 func splitCombs(combs [][]int) [][][]int {
-	amount := 100000
+	cpus := runtime.NumCPU()
+	fmt.Printf("cpu core number  : %d\n", cpus)
+	amount := len(combs) / cpus
 
 	combsList := [][][]int{}
 	times := len(combs) / amount
